@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:background="@drawable/start">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:weightSum="5">
+
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="500dp"
+            android:layout_height="120dp"
+            android:scaleX="0.9"
+            android:scaleY="0.9"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:src="@drawable/logo"
+            android:layout_weight="2"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:textColor="#ffffff"
+        android:textColorLink="#ffffff"
+        android:textColorHighlight="#ffffff"
+        android:padding="10dp"
+        android:layout_marginBottom="7dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/name"
+        android:hint="Name"
+        android:textColorHint="#ffffff"
+        android:textAlignment="center"/>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginTop="20dp">
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/start"
+        android:textColor="#ffffff"
+        android:text="START GAME"
+        android:background="@drawable/button_style"
+        android:layout_marginTop="10dp"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/highScores"
+        android:textColor="#ffffff"
+        android:background="@drawable/button_style"
+        android:text="High Score"
+        android:layout_marginTop="10dp"/>
+
+    <Button android:id="@+id/rules"
+        android:textColor="#ffffff"
+        android:background="@drawable/button_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Rules"
+        android:layout_marginTop="10dp"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/about"
+        android:background="@drawable/button_style"
+        android:textColor="#ffffff"
+        android:text="About"
+        android:layout_marginTop="10dp"/>
+
+    </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

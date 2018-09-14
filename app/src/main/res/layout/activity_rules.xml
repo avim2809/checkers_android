@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/start"
+    android:orientation="vertical"
+    android:weightSum="10"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/rulesLogo"
+        android:layout_width="match_parent"
+        android:layout_height="113dp"
+        android:layout_alignParentTop="true"
+        android:layout_weight="2"
+        android:scaleX="0.9"
+        android:scaleY="0.9"
+        android:src="@drawable/rules" />
+
+    <ScrollView
+        android:id="@+id/scrollBar"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_below="@id/rulesLogo"
+        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="-5dp"
+        android:padding="10dp"
+        android:layout_weight="7"
+        android:background="@drawable/white_box_frame"
+        android:paddingBottom="20dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:shadowColor="#000000"
+                android:text="Checkers is a board game played between two players, who alternate moves. The player who cannot move, because he has no pieces, or because all of his pieces are blocked, loses the game. Players can resign or agree to draws."
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:shadowColor="#000000"
+                android:text="The board is square, with sixty-four smaller squares, arranged in an 8x8 grid. The smaller squares are alternately light and dark colored (green and buff in tournaments), in the famous ''checker-board'' pattern. The game of checkers is played on the dark (black or green) squares. Each player has a dark square on his far left and a light square on his far right. The double-corner is the distinctive pair of dark squares in the near right corner."
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:shadowColor="#000000"
+                android:text="The pieces are Red and White, and are called Black and White in most books. In some modern publications, they are called Red and White. Sets bought in stores may be other colors. Black and Red pieces are still called Black (or Red) and White, so that you can read the books. The pieces are of cylindrical shape, much wider than they are tall. Tournament pieces are smooth, and have no designs (crowns or concentric circles) on them. The pieces are placed on the dark squares of the board."
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:shadowColor="#000000"
+                android:text="The starting position is with each player having twelve pieces, on the twelve dark squares closest to his edge of the board. Notice that in checker diagrams, the pieces are placed on the light colored squares, for readability. On a real board they are on the dark squares."
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:shadowColor="#000000"
+                android:text="Moving: A piece which is not a king can move one square, diagonally, forward. A king can move diagonally, forward or backward. A piece (piece or king) can only move to a vacant square. A move can also consist of one or more jumps (next paragraph)."
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:shadowColor="#000000"
+                android:text="Jumping: You capture an opponent's piece by jumping over it, diagonally, to the adjacent vacant square beyond it. A king can jump diagonally, forward or backward. A piece which is not a king, can only jump diagonally forward. You can make a multiple jump, with one piece only, by jumping to empty square to empty square. You can only jump one piece, with any given jump. But you can jump several pieces, with a move of several jumps. You remove the jumped pieces from the board. You cannot jump your own piece. You cannot jump the same piece twice, in the same move. If you can jump, you must. And, a multiple jump must be completed. You cannot stop part way through a multiple jump. If you have a choice of jumps, you can choose among them, regardless of whether some of them are multiple, or not. A piece, whether it is a king or not, can jump a king."
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:shadowColor="#000000"
+                android:text="Kinging: When a piece reaches the last row (the King Row), it becomes a King. A second checker is place on top of that one, by the opponent. A piece that has just kinged, cannot continue jumping pieces, until the next move."
+                android:textSize="16sp" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/scrollBar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="Back"
+        android:background="@drawable/button_style"/>
+</RelativeLayout>
