@@ -121,6 +121,7 @@ public class GameBoard{
                 imageGlow.setImageResource(currGlow);
                 imageGlow.setTag("image_glow");
 
+
                 ImageView imageBG = new ImageView(context);
                 imageBG.setImageResource(currColor);
                 imageBG.setTag("image_bg");
