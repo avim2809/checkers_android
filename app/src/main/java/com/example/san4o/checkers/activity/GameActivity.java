@@ -6,7 +6,9 @@ import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 
+import com.example.san4o.checkers.DataManager;
 import com.example.san4o.checkers.GameManager;
+import com.example.san4o.checkers.Globals;
 import com.example.san4o.checkers.R;
 
 public class GameActivity extends Activity implements View.OnClickListener {
@@ -23,15 +25,16 @@ public class GameActivity extends Activity implements View.OnClickListener {
     //___________________________________________
     private void initGameSettings(){
         GridLayout gridLayout = findViewById(R.id.game_board);
-        gameManager = new GameManager(gridLayout,this);
+        Globals.gameBoardGrid = gridLayout;
+        gameManager = new GameManager();
         gameManager.initGame();
     }
     //___________________________________________
     @Override
     public void onClick(View view) {
-        if(view instanceof ImageView){
-            gameManager.clickOnStone(view);
-        }
+        //if(view instanceof ImageView){
+            //gameManager.clickOnStone(view);
+        //}
     }
     //___________________________________________
 }

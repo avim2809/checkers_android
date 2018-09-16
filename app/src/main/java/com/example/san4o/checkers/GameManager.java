@@ -14,18 +14,18 @@ public class GameManager {
     private GameBoard gameBoard;
     private Player playerUser;
     private Player playerComputer;
-    private GameActivity gameActivity;
 
-    public GameManager(GridLayout grid,GameActivity activity){
-        gameBoard = new GameBoard(grid,activity);
-        gameActivity = activity;
+    public GameManager(){
+        gameBoard = new GameBoard();
+        //gameActivity = activity;
     }
     //___________________________________________-
     public void initGame(){
-        playerUser = new PlayerUser();
-        playerComputer = new PlayerComputer();
+        playerUser = new PlayerUser(gameBoard);
+        playerComputer = new PlayerComputer(gameBoard);
         generateColor();
-        gameBoard.initStones();
+        gameBoard.initComputerStones(playerComputer.getColor(),playerComputer);
+        gameBoard.initUserStones(playerUser.getColor(),playerUser);
     }
     //___________________________________________-
     private void generateColor(){
@@ -40,11 +40,5 @@ public class GameManager {
             playerComputer.setPlayerColor(Color.WHITE);
         }
     }
-    //___________________________________________-
-
-    public void clickOnStone(View clickedStone){
-        String id = String.valueOf(clickedStone.getId());
-        Toast.makeText(gameActivity, id, Toast.LENGTH_SHORT).show();
-    }
-    //___________________________________________-
+    //__________________________________________
 }
