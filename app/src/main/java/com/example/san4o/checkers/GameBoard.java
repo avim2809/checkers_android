@@ -51,7 +51,7 @@ public class GameBoard{
                     //stoneImage.setOnClickListener(listener);
                     stoneImage.setScaleType(ImageView.ScaleType.CENTER);
 
-                    currStoneToAdd = new Stone(Color.BLACK,stoneImage,context,currCellIndex);
+                    currStoneToAdd = new Stone(Color.BLACK,stoneImage,currCellIndex);
                     currStoneToAdd.setRow(i);
                     currStoneToAdd.setCol(j);
 
@@ -79,7 +79,7 @@ public class GameBoard{
                     stoneImage.setOnClickListener(listener);
                     stoneImage.setScaleType(ImageView.ScaleType.CENTER);
 
-                    currStoneToAdd = new Stone(Color.WHITE,stoneImage,context,currCellIndex);
+                    currStoneToAdd = new Stone(Color.WHITE,stoneImage,currCellIndex);
                     currStoneToAdd.setRow(i);
                     currStoneToAdd.setCol(j);
                     addStone(currStoneToAdd);
