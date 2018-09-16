@@ -1,49 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/start"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:layout_gravity="center">
+    android:background="@drawable/start">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/computer_details"
+        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="30dp"
-        android:orientation="horizontal"
-        android:weightSum="2">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/computer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_alignParentStart="true"
             android:text="Player: Computer"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"
+            android:layout_alignParentLeft="true" />
 
         <TextView
             android:id="@+id/computer_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="50dp"
             android:layout_weight="1"
             android:text="Score: "
-            android:textColor="#ffffff" />
-    </LinearLayout>
+            android:textColor="#ffffff"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
 
     <GridLayout
         android:id="@+id/game_board"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/computer_details"
+        android:layout_centerInParent="true"
         android:layout_marginBottom="30dp"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="30dp"
@@ -55,32 +56,34 @@
         
     </GridLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginBottom="30dp"
         android:layout_marginTop="30dp"
-        android:layout_weight="0.3"
-        android:orientation="horizontal"
-        android:weightSum="2">
+        android:layout_alignParentBottom="true">
 
         <TextView
             android:id="@+id/user"
             android:layout_width="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Player: Computer"
-            android:textColor="#ffffff" />
+            android:text="Player: User"
+            android:textColor="#ffffff"
+            android:layout_alignParentLeft="true" />
 
         <TextView
             android:id="@+id/user_score"
+            android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:layout_marginLeft="50dp"
             android:layout_weight="1"
             android:text="Score: "
-            android:textColor="#ffffff" />
-    </LinearLayout>
-</LinearLayout>
+            android:textColor="#ffffff"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
+</RelativeLayout>
