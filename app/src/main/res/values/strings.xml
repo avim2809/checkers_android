@@ -9,4 +9,6 @@
     <string name="new_game">New Game</string>
     <string name="share">Share</string>
     <string name="back">Back</string>
+    <string name="black">Black</string>
+    <string name="white">White</string>
 </resources>

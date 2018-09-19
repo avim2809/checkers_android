@@ -2,17 +2,19 @@ package com.example.san4o.checkers;
 
 import com.example.san4o.checkers.enums.Color;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class GameManager {
-
+    private ArrayList highScoreArray;
     private GameBoard gameBoard;
     private PlayerUser playerUser;
     private PlayerComputer playerComputer;
 
     public GameManager(){
         gameBoard = new GameBoard();
-        //gameActivity = activity;
+        highScoreArray = new ArrayList<HighScore>();
     }
     //___________________________________________-
     public void initGame(){
@@ -40,6 +42,11 @@ public class GameManager {
         DataManager.getInstance().saveData(playerUser.getName(),"player_name");
         DataManager.getInstance().saveData(gameBoard.getBoard(),"game_board_data");
         DataManager.getInstance().saveData(GameBoard.BOARD_SIZE,"game_board_size");
+    }
+    //__________________________________________
+    public void addHighScore(String name,int score){
+        highScoreArray.add(new HighScore(name,score));
+        //DataManager.getInstance().saveData(highScoreArray,"high_scores");
     }
     //__________________________________________
 }

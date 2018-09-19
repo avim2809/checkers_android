@@ -1,15 +1,18 @@
 package com.example.san4o.checkers.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.GridLayout;
+import android.widget.Toast;
 
 import com.example.san4o.checkers.GameManager;
 import com.example.san4o.checkers.Globals;
 import com.example.san4o.checkers.R;
 
-public class CheckersActivity extends Activity implements View.OnClickListener{
+public class CheckersActivity extends Activity implements DialogInterface.OnClickListener,View.OnClickListener{
 
     private String userName ;
     private GameManager gameManager;
@@ -18,7 +21,7 @@ public class CheckersActivity extends Activity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkers);
-
+        Globals.checkersActivity = this;
         userName = getIntent().getExtras().get("name").toString();
         initGameSettings();
     }
@@ -46,4 +49,28 @@ public class CheckersActivity extends Activity implements View.OnClickListener{
         //gameManager.saveData();
     }
     //___________________________________________
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        AlertDialog.Builder backButtonDialog = new AlertDialog.Builder(this);
+        backButtonDialog.setTitle("Confirm Exit").setMessage("Would you like to save the game?").setPositiveButton("Yes", this).setNegativeButton("No", this).setNeutralButton("Stay in game",this);
+    }
+
+
+    @Override
+    public void onClick(DialogInterface dialogInterface, int i) {
+        if(i == dialogInterface.BUTTON_POSITIVE){
+            //DataManager.getInstance().saveData();
+            Toast.makeText(this, "yes to save", Toast.LENGTH_SHORT).show();
+            finish();
+
+        }else if (i == dialogInterface.BUTTON_NEGATIVE){
+            Toast.makeText(this, "not to save", Toast.LENGTH_SHORT).show();
+            finish();
+        }else if (i == dialogInterface.BUTTON_NEUTRAL){
+            Toast.makeText(this, "stay in game ", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

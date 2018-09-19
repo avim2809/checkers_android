@@ -1,11 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:background="@drawable/start"
     android:layoutDirection="ltr">
+
+    <Button
+        android:id="@+id/save"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/menu_button_style"
+        tools:ignore="RtlCompat" />
+
+    <LinearLayout
+        android:id="@+id/stats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/save"
+        android:layout_marginStart="117dp"
+        android:orientation="vertical"
+        tools:ignore="RtlCompat"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/black"
+                android:textColor="@color/colorAccent" />
+
+            <TextView
+                android:id="@+id/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/white"
+                android:textColor="@color/colorAccent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/black_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="40dp"
+                android:text="0"
+                android:textColor="@color/colorAccent" />
+
+            <TextView
+                android:id="@+id/white_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+
+                android:textColor="@color/colorAccent" />
+        </LinearLayout>
+
+    </LinearLayout>
+
 
     <GridLayout
         android:id="@+id/game_board"

@@ -34,6 +34,7 @@
         android:id="@+id/name"
         android:hint="@string/name"
         android:textColorHint="#ffffff"
+        android:outlineAmbientShadowColor="@color/colorAccent"
         android:textAlignment="center"/>
 <LinearLayout
     android:layout_width="match_parent"

@@ -10,4 +10,6 @@
     <string name="new_game">משחק חדש</string>
     <string name="share">שתף</string>
     <string name="back">חזור</string>
+    <string name="black">שחור</string>
+    <string name="white">לבן</string>
 </resources>
