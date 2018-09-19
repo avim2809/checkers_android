@@ -4,28 +4,30 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.GridLayout;
-import android.widget.ImageView;
 
-import com.example.san4o.checkers.DataManager;
 import com.example.san4o.checkers.GameManager;
 import com.example.san4o.checkers.Globals;
 import com.example.san4o.checkers.R;
 
-public class GameActivity extends Activity implements View.OnClickListener {
+public class CheckersActivity extends Activity implements View.OnClickListener{
+
     private String userName ;
     private GameManager gameManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game);
+        setContentView(R.layout.activity_checkers);
 
-        userName= getIntent().getExtras().get("name").toString();
+        userName = getIntent().getExtras().get("name").toString();
         initGameSettings();
     }
+
     //___________________________________________
     private void initGameSettings(){
         GridLayout gridLayout = findViewById(R.id.game_board);
         Globals.gameBoardGrid = gridLayout;
+        Globals.checkersActivity = this;
         gameManager = new GameManager();
         gameManager.initGame();
     }
@@ -33,8 +35,15 @@ public class GameActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         //if(view instanceof ImageView){
-            //gameManager.clickOnStone(view);
+        //gameManager.clickOnStone(view);
         //}
+    }
+    //___________________________________________
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        //gameManager.saveData();
     }
     //___________________________________________
 }

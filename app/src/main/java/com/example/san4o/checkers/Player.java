@@ -48,7 +48,6 @@ public abstract class Player implements View.OnClickListener{
                     stoneToRet = activeStones.get(i);
                     break;
                 }
-
         }
         return stoneToRet;
     }

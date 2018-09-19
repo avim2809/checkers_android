@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">דמקה</string>
+    <string name="name">שם</string>
+    <string name="about">אודות</string>
+    <string name="high_score">טבלת שיאים</string>
+    <string name="start">התחל משחק</string>
+    <string name="rules">הוראות</string>
+    <string name="save">שמור</string>
+    <string name="new_game">משחק חדש</string>
+    <string name="share">שתף</string>
+    <string name="back">חזור</string>
+</resources>

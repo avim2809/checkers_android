@@ -8,6 +8,9 @@ import java.util.ArrayList;
 
 public class PlayerUser extends Player {
 
+
+    private String name;
+
     public PlayerUser(GameBoard gameBoard){
         activeStones = new ArrayList<>();
         lostStones = new ArrayList<>();
@@ -48,4 +51,13 @@ public class PlayerUser extends Player {
     private void moveStoneAction(Stone stoneToMove){
 
     }
+    //____________________________________________
+    public String getName() {
+        return name;
+    }
+    //____________________________________________
+    public void setName(String name) {
+        this.name = name;
+    }
+    //____________________________________________
 }

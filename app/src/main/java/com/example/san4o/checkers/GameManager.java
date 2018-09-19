@@ -1,10 +1,5 @@
 package com.example.san4o.checkers;
 
-import android.widget.GridLayout;
-import android.widget.Toast;
-import android.view.View;
-
-import com.example.san4o.checkers.activity.GameActivity;
 import com.example.san4o.checkers.enums.Color;
 
 import java.util.Random;
@@ -12,8 +7,8 @@ import java.util.Random;
 public class GameManager {
 
     private GameBoard gameBoard;
-    private Player playerUser;
-    private Player playerComputer;
+    private PlayerUser playerUser;
+    private PlayerComputer playerComputer;
 
     public GameManager(){
         gameBoard = new GameBoard();
@@ -39,6 +34,12 @@ public class GameManager {
             playerUser.setPlayerColor(Color.BLACK);
             playerComputer.setPlayerColor(Color.WHITE);
         }
+    }
+    //__________________________________________
+    public void saveData(){
+        DataManager.getInstance().saveData(playerUser.getName(),"player_name");
+        DataManager.getInstance().saveData(gameBoard.getBoard(),"game_board_data");
+        DataManager.getInstance().saveData(GameBoard.BOARD_SIZE,"game_board_size");
     }
     //__________________________________________
 }

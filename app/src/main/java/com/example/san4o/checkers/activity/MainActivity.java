@@ -7,10 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.san4o.checkers.DataManager;
+import com.example.san4o.checkers.Globals;
 import com.example.san4o.checkers.R;
-import com.example.san4o.checkers.enums.Color;
-
-import java.util.Random;
+import com.muddzdev.styleabletoastlibrary.StyleableToast;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
@@ -20,6 +20,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Globals.mainActivity = this;
+        DataManager.getInstance().initSharedPreferences(this.getApplicationContext());
+
+
 
         nameEditText = findViewById(R.id.name);
         Button rules = findViewById(R.id.rules);
@@ -31,6 +35,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
         rules.setOnClickListener(this);
         highScore.setOnClickListener(this);
         about.setOnClickListener(this);
+
+
+        new StyleableToast
+                .Builder(Globals.mainActivity)
+                .text("Welcome!")
+                .textColor(android.graphics.Color.WHITE)
+                .backgroundColor(android.graphics.Color.BLUE)
+                .show();
     }
 
     @Override
@@ -52,7 +64,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void clickOnHighScore(){
-        // start activity of shoe high scores
+        Intent highScoreIntent = new Intent(this,HighScoreActivity.class);
+        startActivity(highScoreIntent);
     }
 
     private void clickOnAbout(){
@@ -63,7 +76,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private void clickOnStart(){
         String userName = nameEditText.getText().toString();
         if(!userName.equals("")){
-            Intent gameIntent = new Intent(this,GameActivity.class);
+            Intent gameIntent = new Intent(this,CheckersActivity.class);
             gameIntent.putExtra("name",userName);
             startActivity(gameIntent);
         }

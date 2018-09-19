@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,28 +13,37 @@
         android:id="@+id/rulesLogo"
         android:layout_width="match_parent"
         android:layout_height="113dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="17dp"
         android:layout_weight="2"
-        android:layout_marginTop="10dp"
         android:scaleX="0.9"
         android:scaleY="0.9"
-        android:src="@drawable/about" />
+        android:src="@drawable/about"
+        tools:ignore="RtlCompat" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="197dp"
         android:text="Created by Liliya and Avi"
         android:textAlignment="center"
-        android:layout_margin="30dp"
         android:textColor="#ffffff"
-        android:textSize="20sp"/>
+        android:textSize="20sp" />
+
     <Button
         android:id="@+id/back"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/scrollBar"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/circle_button_style"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        android:text="Back"
-        android:background="@drawable/button_style"/>
-</LinearLayout>
+        android:textColor="#ffffff"
+        android:textSize="17sp"
+        android:text="@string/back" />
+</RelativeLayout>

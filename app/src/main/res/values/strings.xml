@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Checkers</string>
+    <string name="name">Name</string>
+    <string name="rules">Rules</string>
+    <string name="start">Start Game</string>
+    <string name="high_score">High Score</string>
+    <string name="about">About</string>
+    <string name="save">Save</string>
+    <string name="new_game">New Game</string>
+    <string name="share">Share</string>
+    <string name="back">Back</string>
 </resources>

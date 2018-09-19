@@ -1,11 +1,8 @@
 package com.example.san4o.checkers;
 
 
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
-
-import com.example.san4o.checkers.activity.GameActivity;
+import android.widget.RelativeLayout;
 import com.example.san4o.checkers.enums.Color;
 
 public class Stone{
@@ -13,21 +10,15 @@ public class Stone{
     private int row;
     private int col;
     private Color color;
-    private int stone_res;
     private int gridIndex;
     private ImageView image;
-    private int id;
+    private RelativeLayout relativeLayout;
 
     public Stone(Color newColor, ImageView imageRes,int gridIndex){
         this.color = newColor;
         this.gridIndex = gridIndex;
-
-        if(this.color == Color.WHITE){
-            stone_res = R.drawable.stone_white;
-        }else if(this.color == Color.BLACK){
-            stone_res = R.drawable.stone_black;
-        }
         image = imageRes;
+        isKing = false;
     }
     //_____________________________________________
     public void setRow(int newRow){
@@ -54,4 +45,22 @@ public class Stone{
         return this.color;
     }
     //_____________________________________________
+
+    public boolean isKing() {
+        return isKing;
+    }
+
+    public void setKing(boolean king) {
+        isKing = king;
+    }
+
+    private boolean isKing;
+
+    public RelativeLayout getRelativeLayout() {
+        return relativeLayout;
+    }
+
+    public void setRelativeLayout(RelativeLayout relativeLayout) {
+        this.relativeLayout = relativeLayout;
+    }
 }

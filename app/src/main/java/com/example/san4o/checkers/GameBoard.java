@@ -1,17 +1,11 @@
 package com.example.san4o.checkers;
 
-import android.graphics.drawable.Drawable;
-import android.media.Image;
-import android.provider.Settings;
-import android.support.annotation.DrawableRes;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
-import com.example.san4o.checkers.activity.GameActivity;
+import com.example.san4o.checkers.activity.CheckersActivity;
+import com.example.san4o.checkers.activity.HighScoreActivity;
 import com.example.san4o.checkers.enums.Color;
 
 import java.util.ArrayList;
@@ -26,13 +20,24 @@ public class GameBoard{
     private int blackDrawableCell = R.drawable.black_cell_small;
     private int whiteCellGlow = R.drawable.white_cell_glow;
     private int blackCellGlow = R.drawable.black_cell_glow;
-    private GameActivity context;
+    private CheckersActivity context;
 
     public GameBoard(){
         gameBoardGrid = Globals.gameBoardGrid;
-        context = Globals.gameActivity;
+        context = Globals.checkersActivity;
         activeStones = new ArrayList<>();
         initBoard();
+
+    }
+    //______________________________________
+    private void initWhiteCells(){
+        for(int i=0;i<BOARD_SIZE;i++){
+            for(int j=0;j<BOARD_SIZE;j++){
+                if((i+j)%2==0){
+
+                }
+            }
+        }
     }
     //______________________________________
     public void initComputerStones(Color color,Player listener){
@@ -43,21 +48,24 @@ public class GameBoard{
             for(int j=0;j<BOARD_SIZE;j++){
                 if((i+j)%2==1){
                     int currCellIndex = (gameBoardGrid.getColumnCount() * i) + j;
-                    FrameLayout canvas = (FrameLayout) gameBoardGrid.getChildAt(currCellIndex);
+                    RelativeLayout frame = (RelativeLayout) gameBoardGrid.getChildAt(currCellIndex);
 
                     ImageView stoneImage =  new ImageView(context);
                     stoneImage.setTag("row"+String.valueOf(i)+"col"+String.valueOf(j));
                     stoneImage.setBackgroundResource(playerStoneDrawable);
-                    //stoneImage.setOnClickListener(listener);
-                    stoneImage.setScaleType(ImageView.ScaleType.CENTER);
+
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    params.setMargins(2, 2, 2, 2);
+                    params.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
+                    stoneImage.setLayoutParams(params);
 
                     currStoneToAdd = new Stone(Color.BLACK,stoneImage,currCellIndex);
                     currStoneToAdd.setRow(i);
                     currStoneToAdd.setCol(j);
-
+                    currStoneToAdd.setRelativeLayout(frame);
                     addStone(currStoneToAdd);
                     listener.addStone(currStoneToAdd);
-                    canvas.addView(stoneImage);
+                    frame.addView(stoneImage);
                 }
             }
         }
@@ -71,21 +79,27 @@ public class GameBoard{
             for(int j=BOARD_SIZE-1;j>=0;j--){
                 if((i+j)%2==1){
                     int currCellIndex = (gameBoardGrid.getColumnCount() * i) + j;
-                    FrameLayout canvas = (FrameLayout) gameBoardGrid.getChildAt(currCellIndex);
+                    RelativeLayout frame = (RelativeLayout) gameBoardGrid.getChildAt(currCellIndex);
 
                     ImageView stoneImage =  new ImageView(context);
                     stoneImage.setTag("row"+String.valueOf(i)+"col"+String.valueOf(j));
                     stoneImage.setBackgroundResource(playerStoneDrawable);
                     stoneImage.setOnClickListener(listener);
-                    stoneImage.setScaleType(ImageView.ScaleType.CENTER);
+
+
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    params.setMargins(2, 2, 2, 2);
+                    params.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
+                    stoneImage.setLayoutParams(params);
 
                     currStoneToAdd = new Stone(Color.WHITE,stoneImage,currCellIndex);
                     currStoneToAdd.setRow(i);
                     currStoneToAdd.setCol(j);
+                    currStoneToAdd.setRelativeLayout(frame);
                     addStone(currStoneToAdd);
                     listener.addStone(currStoneToAdd);
 
-                    canvas.addView(stoneImage);
+                    frame.addView(stoneImage);
                 }
             }
         }
@@ -116,18 +130,18 @@ public class GameBoard{
             }
             for(int j=0; j<BOARD_SIZE; j++){
                 int cellIndex = (gameBoardGrid.getColumnCount() * i) + j;
-                FrameLayout canvas =  new FrameLayout(context);
+                RelativeLayout frame =  new RelativeLayout(context);
+
                 ImageView imageGlow = new ImageView(context);
                 imageGlow.setImageResource(currGlow);
                 imageGlow.setTag("image_glow");
 
-
                 ImageView imageBG = new ImageView(context);
                 imageBG.setImageResource(currColor);
                 imageBG.setTag("image_bg");
-                //canvas.setBackgroundResource(currColor);
-                canvas.addView(imageGlow);
-                canvas.addView(imageBG);
+                //frame.setBackgroundResource(currColor);
+                frame.addView(imageGlow);
+                frame.addView(imageBG);
                 if(currColor == whiteDrawableCell){
                     currColor = blackDrawableCell;
                     currGlow = blackCellGlow;
@@ -135,9 +149,10 @@ public class GameBoard{
                     currColor = whiteDrawableCell;
                     currGlow = whiteCellGlow;
                 }
-                gameBoardGrid.addView(canvas,cellIndex);
+                gameBoardGrid.addView(frame,cellIndex);
             }
         }
+        initWhiteCells();
     }
     //______________________________________
     private GridLayout getGrid(){
