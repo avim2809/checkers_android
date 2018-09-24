@@ -4,6 +4,8 @@ import com.example.san4o.checkers.enums.Color;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Random;
 
 public class GameManager {
@@ -45,8 +47,12 @@ public class GameManager {
     }
     //__________________________________________
     public void addHighScore(String name,int score){
+        if(highScoreArray.size()>=10){
+            Collections.sort(highScoreArray,Collections.reverseOrder());
+            highScoreArray.remove(highScoreArray.size()-1);
+        }
         highScoreArray.add(new HighScore(name,score));
-        //DataManager.getInstance().saveData(highScoreArray,"high_scores");
+        DataManager.getInstance().saveData(highScoreArray,"high_scores");
     }
     //__________________________________________
 }

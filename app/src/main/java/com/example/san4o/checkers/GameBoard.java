@@ -1,5 +1,7 @@
 package com.example.san4o.checkers;
 
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -8,6 +10,7 @@ import com.example.san4o.checkers.activity.CheckersActivity;
 import com.example.san4o.checkers.activity.HighScoreActivity;
 import com.example.san4o.checkers.enums.Color;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class GameBoard{
@@ -21,13 +24,20 @@ public class GameBoard{
     private int whiteCellGlow = R.drawable.white_cell_glow;
     private int blackCellGlow = R.drawable.black_cell_glow;
     private CheckersActivity context;
+    private ArrayList<ImageView> glowingCells;
+    private Animation glowAnimation;
 
     public GameBoard(){
         gameBoardGrid = Globals.gameBoardGrid;
         context = Globals.checkersActivity;
         activeStones = new ArrayList<>();
+        initGameProps();
         initBoard();
-
+    }
+    //______________________________________
+    private void initGameProps(){
+        glowingCells = new ArrayList<>();
+        glowAnimation = AnimationUtils.loadAnimation(Globals.checkersActivity,R.anim.glow_anim);
     }
     //______________________________________
     private void initWhiteCells(){
@@ -139,7 +149,6 @@ public class GameBoard{
                 ImageView imageBG = new ImageView(context);
                 imageBG.setImageResource(currColor);
                 imageBG.setTag("image_bg");
-                //frame.setBackgroundResource(currColor);
                 frame.addView(imageGlow);
                 frame.addView(imageBG);
                 if(currColor == whiteDrawableCell){
@@ -174,6 +183,24 @@ public class GameBoard{
     //______________________________________
     public Stone[][] getBoard(){
         return stones;
+    }
+    //______________________________________
+    public void glowCells(ImageView cellToGlow){
+        cellToGlow.startAnimation(glowAnimation);
+        glowingCells.add(cellToGlow);
+    }
+    //______________________________________
+    public void glowCells(ArrayList<ImageView> cellToGlowArray){
+        for(int i=0;i<cellToGlowArray.size();i++){
+            cellToGlowArray.get(i).startAnimation(glowAnimation);
+            glowingCells.add(cellToGlowArray.get(i));
+        }
+    }
+    //______________________________________
+    public void removeGlow(){
+        for(int i=0;i<glowingCells.size();i++){
+            glowingCells.get(i).clearAnimation();
+        }
     }
     //______________________________________
 }
