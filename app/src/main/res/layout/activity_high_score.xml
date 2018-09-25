@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/high_score_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@drawable/start"
+    android:layoutDirection="ltr">
+
+    <ImageView
+        android:id="@+id/high_score_logo"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:scaleX="1"
+        android:scaleY="1"
+        android:src="@drawable/high_scores"
+        tools:ignore="RtlCompat" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/high_score_logo"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+
+        <TableLayout
+            android:id="@+id/high_scores_table"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent">
+
+            <TableRow
+                android:id="@+id/tableRow1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/TextView04"
+                    android:text=""></TextView>
+
+                <TextView
+                    android:id="@+id/TextView05"
+                    android:text="Feb 7"
+                    android:textStyle="bold"
+                    android:typeface="serif"></TextView>
+
+                <TextView
+                    android:id="@+id/TextView03"
+                    android:text="Feb 8"
+                    android:textStyle="bold"
+                    android:typeface="serif"></TextView>
+
+                <TextView
+                    android:id="@+id/TextView02"
+                    android:text="Feb 9"
+                    android:textStyle="bold"
+                    android:typeface="serif"></TextView>
+
+                <TextView
+                    android:id="@+id/TextView01"
+                    android:text="Feb 10"
+                    android:textStyle="bold"
+                    android:typeface="serif"></TextView>
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:text="Feb 11"
+                    android:textStyle="bold"
+                    android:typeface="serif"></TextView>
+            </TableRow>
+
+
+
+            <TableRow
+                android:id="@+id/tableRow2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:text="Day Low"
+                    android:textStyle="bold"></TextView>
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:gravity="center_horizontal"
+                    android:text="15°F"></TextView>
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:gravity="center_horizontal"
+                    android:text="14°F"></TextView>
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:gravity="center_horizontal"
+                    android:text="3°F"></TextView>
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:gravity="center_horizontal"
+                    android:text="5°F"></TextView>
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:gravity="center_horizontal"
+                    android:text="6°F"></TextView>
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/back"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="11dp"
+        android:background="@drawable/back_button_style"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="17sp"
+        android:textColor="#ffffff"
+        tools:ignore="RtlCompat" />
+</RelativeLayout>
