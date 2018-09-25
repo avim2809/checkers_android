@@ -149,6 +149,7 @@ public class GameBoard{
                 ImageView imageBG = new ImageView(context);
                 imageBG.setImageResource(currColor);
                 imageBG.setTag("image_bg");
+
                 frame.addView(imageGlow);
                 frame.addView(imageBG);
                 if(currColor == whiteDrawableCell){
