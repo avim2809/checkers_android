@@ -27,7 +27,7 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
-public class GameManager implements View.OnClickListener,Transition.TransitionListener{
+public class GameManager implements View.OnClickListener{
     public final int INIT_STONES_NUM = 12;
     private ArrayList highScoreArray;
     private GameBoard gameBoard;
@@ -440,13 +440,14 @@ public class GameManager implements View.OnClickListener,Transition.TransitionLi
     }
 
     //__________________________________________
-    public void addHighScore(String name,int score){
-        if(highScoreArray.size()>=10){
-            Collections.sort(highScoreArray,Collections.reverseOrder());
-            highScoreArray.remove(highScoreArray.size()-1);
+    public void addHighScore(String name,int score) {
+        if (highScoreArray.size() >= 10) {
+            Collections.sort(highScoreArray, Collections.reverseOrder());
+            highScoreArray.remove(highScoreArray.size() - 1);
         }
-        highScoreArray.add(new HighScore(name,score));
-        DataManager.getInstance().saveData(highScoreArray,"high_scores");
+        highScoreArray.add(new HighScore(name, score));
+        DataManager.getInstance().saveData(highScoreArray, "high_scores");
+    }
 
     private Location randomLocationFromSet(LinkedHashSet<Location>locations)
     {
@@ -477,62 +478,5 @@ public class GameManager implements View.OnClickListener,Transition.TransitionLi
     }
 
 
-    @Override
-    public void onTransitionStart(Transition transition) {
-        unmarkPossibleMovesOnBoard();
 
-    }
-
-    @Override
-    //calling this method every time moving a player
-    public void onTransitionEnd(Transition transition) {
-
-//        RelativeLayout currentParent = gameBoard.getLayoutatLocation(last_clicked_stone.getLocation());
-//        RelativeLayout newParent = gameBoard.getLayoutatLocation(lastClickedLocation);
-//        assert (newParent!= null);
-//        ImageView stoneIv = getGameBoard().getStoneImageViewAtLocation(last_clicked_stone.getLocation());
-//        assert (stoneIv != null);
-//        currentParent.removeView(stoneIv);
-//        newParent.addView(stoneIv);
-//        stoneIv.setTag(gameBoard.STONE_TAG+":"+lastClickedLocation.toString());
-//        gameBoard.changeStoneLocationOnBoard(last_clicked_stone.getLocation(),lastClickedLocation);
-//        gameBoard.getStoneAtLocation(last_clicked_stone.getLocation()).setLocation(lastClickedLocation);
-
-
-    }
-
-    @Override
-    public void onTransitionCancel(Transition transition) {
-
-    }
-
-    @Override
-    public void onTransitionPause(Transition transition) {
-
-    }
-
-    @Override
-    public void onTransitionStart(Transition transition) {
-
-    }
-
-    @Override
-    public void onTransitionEnd(Transition transition) {
-
-    }
-
-    @Override
-    public void onTransitionCancel(Transition transition) {
-
-    }
-
-    @Override
-    public void onTransitionPause(Transition transition) {
-
-    }
-
-    @Override
-    public void onTransitionResume(Transition transition) {
-
-    }
 }

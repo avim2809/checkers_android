@@ -1,8 +1,8 @@
 package com.example.san4o.checkers;
 
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -10,7 +10,6 @@ import android.widget.RelativeLayout;
 import com.example.san4o.checkers.activity.CheckersActivity;
 import com.example.san4o.checkers.enums.StoneColor;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
