@@ -38,6 +38,14 @@ public class DataManager implements Serializable {
         sharedPrefEditor.commit();
     }
     //________________________________________________________
+    public void saveName(String name){
+        sharedPrefEditor.putString("player_name", name);
+        if(!sharedPreferences.contains(("first_run"))){
+            sharedPrefEditor.putBoolean("first_run", false);
+        }
+        sharedPrefEditor.commit();
+    }
+    //________________________________________________________
     public Stone[][] loadGameBoard(){
         if(sharedPreferences.contains("first_run")){
             String gameBoardString = sharedPreferences.getString("game_board_data", "");

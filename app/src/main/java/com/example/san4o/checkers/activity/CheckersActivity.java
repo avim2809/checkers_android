@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.san4o.checkers.DataManager;
 import com.example.san4o.checkers.GameManager;
 import com.example.san4o.checkers.Globals;
 import com.example.san4o.checkers.R;
@@ -55,6 +56,7 @@ public class CheckersActivity extends Activity implements DialogInterface.OnClic
     @Override
     protected void onPause() {
         super.onPause();
+        DataManager.getInstance().saveData(userName,"name");
 
         //gameManager.saveData();
     }
@@ -65,9 +67,8 @@ public class CheckersActivity extends Activity implements DialogInterface.OnClic
     public void onBackPressed() {
         super.onBackPressed();
         AlertDialog.Builder backButtonDialog = new AlertDialog.Builder(this);
-        backButtonDialog.setTitle("Confirm Exit").setMessage("Would you like to save the game?").setPositiveButton("Yes", this).setNegativeButton("No", this).setNeutralButton("Stay in game",this);
+        backButtonDialog.setTitle("Confirm Exit").setMessage("Would you like to save the gam?").setPositiveButton("Yes", this).setNegativeButton("No", this).setNeutralButton("Stay in game",this).show();
     }
-
 
     @Override
     public void onClick(DialogInterface dialogInterface, int i) {

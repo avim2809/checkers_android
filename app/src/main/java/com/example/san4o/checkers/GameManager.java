@@ -20,6 +20,7 @@ import com.example.san4o.checkers.enums.StoneColor;
 import com.muddzdev.styleabletoastlibrary.StyleableToast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -439,10 +440,13 @@ public class GameManager implements View.OnClickListener,Transition.TransitionLi
     }
 
     //__________________________________________
-//    public void addHighScore(String name,int score){
-//        highScoreArray.add(new HighScore(name,score));
-//        //DataManager.getInstance().saveData(highScoreArray,"high_scores");
-//    }
+    public void addHighScore(String name,int score){
+        if(highScoreArray.size()>=10){
+            Collections.sort(highScoreArray,Collections.reverseOrder());
+            highScoreArray.remove(highScoreArray.size()-1);
+        }
+        highScoreArray.add(new HighScore(name,score));
+        DataManager.getInstance().saveData(highScoreArray,"high_scores");
 
     private Location randomLocationFromSet(LinkedHashSet<Location>locations)
     {
@@ -494,6 +498,26 @@ public class GameManager implements View.OnClickListener,Transition.TransitionLi
 //        gameBoard.changeStoneLocationOnBoard(last_clicked_stone.getLocation(),lastClickedLocation);
 //        gameBoard.getStoneAtLocation(last_clicked_stone.getLocation()).setLocation(lastClickedLocation);
 
+
+    }
+
+    @Override
+    public void onTransitionCancel(Transition transition) {
+
+    }
+
+    @Override
+    public void onTransitionPause(Transition transition) {
+
+    }
+
+    @Override
+    public void onTransitionStart(Transition transition) {
+
+    }
+
+    @Override
+    public void onTransitionEnd(Transition transition) {
 
     }
 

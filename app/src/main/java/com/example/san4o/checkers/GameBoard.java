@@ -1,5 +1,7 @@
 package com.example.san4o.checkers;
 
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -8,6 +10,7 @@ import android.widget.RelativeLayout;
 import com.example.san4o.checkers.activity.CheckersActivity;
 import com.example.san4o.checkers.enums.StoneColor;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -34,16 +37,23 @@ public class GameBoard{
     private int whiteCellGlow = R.drawable.white_cell_glow;
     private int blackCellGlow = R.drawable.black_cell_glow;
     private CheckersActivity context;
+    private ArrayList<ImageView> glowingCells;
+    private Animation glowAnimation;
     private GameManager gameManager;
 
     public GameBoard(GameManager gm){
         gameBoardGrid = Globals.gameBoardGrid;
         context = Globals.checkersActivity;
         activeStones = new ArrayList<>();
+        initGameProps();
         gameManager = gm;
         locationViewHashMap = new HashMap<>();
         initBoard();
-
+    }
+    //______________________________________
+    private void initGameProps(){
+        glowingCells = new ArrayList<>();
+        glowAnimation = AnimationUtils.loadAnimation(Globals.checkersActivity,R.anim.glow_anim);
     }
 
     //______________________________________
@@ -270,5 +280,23 @@ public class GameBoard{
         stones[location.getX()][location.getY()] = null;
     }
 
+    //______________________________________
+    public void glowCells(ImageView cellToGlow){
+        cellToGlow.startAnimation(glowAnimation);
+        glowingCells.add(cellToGlow);
+    }
+    //______________________________________
+    public void glowCells(ArrayList<ImageView> cellToGlowArray){
+        for(int i=0;i<cellToGlowArray.size();i++){
+            cellToGlowArray.get(i).startAnimation(glowAnimation);
+            glowingCells.add(cellToGlowArray.get(i));
+        }
+    }
+    //______________________________________
+    public void removeGlow(){
+        for(int i=0;i<glowingCells.size();i++){
+            glowingCells.get(i).clearAnimation();
+        }
+    }
     //______________________________________
 }
