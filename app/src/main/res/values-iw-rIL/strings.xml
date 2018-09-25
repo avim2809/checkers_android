@@ -12,4 +12,6 @@
     <string name="back">חזור</string>
     <string name="black">שחור</string>
     <string name="white">לבן</string>
+    <string name="no_moves">אין אפשרויות תזוזה</string>
+    <string name="invalid_move">אנא בחר רק במיקומים המודגשים!</string>
 </resources>

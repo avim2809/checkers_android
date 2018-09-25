@@ -58,15 +58,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
+    private void clickOnHighScore() {
+    }
+
     private void clickOnRules(){
         Intent rulesIntent = new Intent(this,RulesActivity.class);
         startActivity(rulesIntent);
     }
 
-    private void clickOnHighScore(){
-        Intent highScoreIntent = new Intent(this,HighScoreActivity.class);
-        startActivity(highScoreIntent);
-    }
+//    private void clickOnHighScore(){
+//        Intent highScoreIntent = new Intent(this,HighScoreActivity.class);
+//        startActivity(highScoreIntent);
+//    }
 
     private void clickOnAbout(){
         Intent aboutIntent = new Intent(this,AboutAvtivity.class);

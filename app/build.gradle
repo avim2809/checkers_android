@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.san4o.checkers"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -29,4 +29,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.muddzdev:styleabletoast:2.1.2'
     implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'uk.com.robust-it:cloning:1.9.10'
 }

@@ -1,60 +1,63 @@
 package com.example.san4o.checkers;
 
 
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import com.example.san4o.checkers.enums.Color;
+
+import com.example.san4o.checkers.enums.StoneColor;
 
 public class Stone{
 
-    private int row;
-    private int col;
-    private Color color;
+    private StoneColor stoneColor;
     private int gridIndex;
-    private ImageView image;
     private RelativeLayout relativeLayout;
+    private boolean isKing;
+    private Location location;
 
-    public Stone(Color newColor, ImageView imageRes,int gridIndex){
-        this.color = newColor;
+    public Stone(StoneColor stoneColor, final Location location) {
+        this.stoneColor = stoneColor;
+        this.location = location;
+    }
+
+    public void setStoneColor(StoneColor stoneColor) {
+        this.stoneColor = stoneColor;
+    }
+
+    public int getGridIndex() {
+        return gridIndex;
+    }
+
+    public void setGridIndex(int gridIndex) {
         this.gridIndex = gridIndex;
-        image = imageRes;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public Stone(StoneColor newStoneColor, int gridIndex, Location location){
+        this.stoneColor = newStoneColor;
+        this.gridIndex = gridIndex;
         isKing = false;
+        this.location = location;
     }
-    //_____________________________________________
-    public void setRow(int newRow){
-        this.row=newRow;
+
+    public StoneColor getStoneColor(){
+        return this.stoneColor;
     }
-    //_____________________________________________
-    public void setCol(int newCol){
-        this.col = newCol;
-    }
-    //_____________________________________________
-    public int getRow(){
-        return row;
-    }
-    //_____________________________________________
-    public int getCol(){
-        return col;
-    }
-    //_____________________________________________
-    public ImageView getImageView(){
-        return image;
-    }
-    //_____________________________________________
-    public Color getColor(){
-        return this.color;
-    }
-    //_____________________________________________
+
 
     public boolean isKing() {
         return isKing;
     }
 
-    public void setKing(boolean king) {
-        isKing = king;
+    public void makeKing()
+    {
+        this.isKing = true;
     }
-
-    private boolean isKing;
 
     public RelativeLayout getRelativeLayout() {
         return relativeLayout;
@@ -62,5 +65,13 @@ public class Stone{
 
     public void setRelativeLayout(RelativeLayout relativeLayout) {
         this.relativeLayout = relativeLayout;
+    }
+
+    @Override
+    public String toString() {
+        return "Stone{" +
+                "stoneColor=" + stoneColor +
+                ", location=" + location.toString() +
+                '}';
     }
 }

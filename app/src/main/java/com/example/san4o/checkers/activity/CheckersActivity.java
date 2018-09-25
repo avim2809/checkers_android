@@ -5,7 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.GridLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.san4o.checkers.GameManager;
@@ -16,29 +16,39 @@ public class CheckersActivity extends Activity implements DialogInterface.OnClic
 
     private String userName ;
     private GameManager gameManager;
-
+    public TextView BlackScore,WhiteScore;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkers);
         Globals.checkersActivity = this;
-        userName = getIntent().getExtras().get("name").toString();
+        BlackScore = findViewById(R.id.black_score);
+        WhiteScore = findViewById(R.id.white_score);
+        if (getIntent().hasExtra("name"))
+        {
+            userName = getIntent().getExtras().get("name").toString();
+
+        }
         initGameSettings();
     }
 
     //___________________________________________
     private void initGameSettings(){
-        GridLayout gridLayout = findViewById(R.id.game_board);
-        Globals.gameBoardGrid = gridLayout;
+        Globals.gameBoardGrid = findViewById(R.id.game_board);
         Globals.checkersActivity = this;
-        gameManager = new GameManager();
+        gameManager = new GameManager(this);
         gameManager.initGame();
+        gameManager.getPlayerUser().setName(userName);
+        BlackScore.setText(gameManager.INIT_STONES_NUM+"");
+        WhiteScore.setText(gameManager.INIT_STONES_NUM+"");
+
     }
     //___________________________________________
     @Override
     public void onClick(View view) {
         //if(view instanceof ImageView){
         //gameManager.clickOnStone(view);
+
         //}
     }
     //___________________________________________

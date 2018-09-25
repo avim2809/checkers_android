@@ -1,6 +1,6 @@
 package com.example.san4o.checkers.enums;
 
-public enum Color {
+public enum StoneColor {
     WHITE,
     BLACK
 }

@@ -1,59 +1,74 @@
 package com.example.san4o.checkers;
+import com.example.san4o.checkers.enums.PlayerRole;
+import com.example.san4o.checkers.enums.StoneColor;
 
-import android.os.Build;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageView;
-
-import com.example.san4o.checkers.enums.Color;
-
-import java.util.ArrayList;
-
-public abstract class Player implements View.OnClickListener{
-    protected int score=0;
-    protected ArrayList<Stone> activeStones = null;
-    protected ArrayList<Stone> lostStones = null;
-    protected Color playerColor ;
+public class Player {
+    private String name;
+    private int stonesNum=0;
+    private StoneColor playerStoneColor;
     protected GameBoard gameBoard;
     protected Stone[][] updatedBoardStones;
+    private boolean turn = false;
 
-    public abstract void makeMove(Stone stoneToMove);
-    //_____________________________________________
-    public void setPlayerColor(Color playerColor) {
-        this.playerColor = playerColor;
+    public PlayerRole getRole() {
+        return role;
     }
-    //_____________________________________________
-    public Color getColor(){
-        return  this.playerColor;
-    }
-    //_____________________________________________
-    public int score(){
-        return this.score;
-    }
-    //_____________________________________________
-    public void setScore(int newScore){
-        this.score = newScore;
-    }
-    //_____________________________________________
-    public void addStone(Stone stoneToAdd){
-        this.activeStones.add(stoneToAdd);
-    }
-    //_____________________________________________
-    public Stone findClickedStone(ImageView image){
-        Stone stoneToRet=null;
-        for(int i=0;i<activeStones.size();i++){
-            ImageView currImageView = activeStones.get(i).getImageView();
 
-                if(currImageView.getTag().toString().equals(image.getTag().toString())){
-                    stoneToRet = activeStones.get(i);
-                    break;
-                }
-        }
-        return stoneToRet;
+    public void setRole(PlayerRole role) {
+        this.role = role;
     }
-    //_____________________________________________
-    public void updateLostStones(Stone lostStone){
-        lostStones.remove(lostStone);
+
+    private PlayerRole role;
+
+    public boolean isTurn() {
+        return turn;
+    }
+
+    public void setTurn(boolean turn) {
+        this.turn = turn;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public StoneColor getPlayerStoneColor() {
+        return playerStoneColor;
+    }
+
+    public GameBoard getGameBoard() {
+        return gameBoard;
+    }
+
+    public void setGameBoard(GameBoard gameBoard) {
+        this.gameBoard = gameBoard;
+    }
+
+    public Stone[][] getUpdatedBoardStones() {
+        return updatedBoardStones;
+    }
+
+    public void setUpdatedBoardStones(Stone[][] updatedBoardStones) {
+        this.updatedBoardStones = updatedBoardStones;
+    }
+
+    public void setPlayerStoneColor(StoneColor playerStoneColor) {
+        this.playerStoneColor = playerStoneColor;
+    }
+    public StoneColor getColor(){
+        return  this.playerStoneColor;
+    }
+
+    public int getStonesNum() {
+        return stonesNum;
+    }
+
+    public void setStonesNum(int stonesNum) {
+        this.stonesNum = stonesNum;
     }
     //_____________________________________________
 }
