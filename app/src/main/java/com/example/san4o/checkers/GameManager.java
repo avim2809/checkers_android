@@ -1,6 +1,7 @@
 package com.example.san4o.checkers;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
@@ -10,11 +11,13 @@ import android.transition.Transition;
 import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.example.san4o.checkers.activity.CheckersActivity;
+import com.example.san4o.checkers.activity.HighScoreActivity;
 import com.example.san4o.checkers.enums.PlayerRole;
 import com.example.san4o.checkers.enums.StoneColor;
 import com.muddzdev.styleabletoastlibrary.StyleableToast;
@@ -26,12 +29,16 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class GameManager implements View.OnClickListener{
+import static android.support.v4.content.ContextCompat.startActivity;
+
+public class GameManager implements View.OnClickListener {
     public final int INIT_STONES_NUM = 12;
     private ArrayList highScoreArray;
     private GameBoard gameBoard;
-    private Player  playerUser;
+    private Player playerUser;
     private Player playerComputer;
     private StoneColor turn;
     private Stone last_clicked_stone;
@@ -41,11 +48,14 @@ public class GameManager implements View.OnClickListener{
     private boolean waiting_for_movement = false;
     private ArrayList<AnimationDrawable> animationDrawableArrayList;
     private ArrayList<ImageView> imageViewArrayList;
-    private CheckersActivity checkersActivity;
-    private ImageView backgroundImg,backgroundGlowImg;
+    private ImageView backgroundImg, backgroundGlowImg;
+
     public StoneColor getTurn() {
         return turn;
     }
+
+    private Animation glowAnimation;
+    private ArrayList<ImageView> glowingCells;
 
     public Player getPlayerUser() {
         return playerUser;
@@ -59,19 +69,27 @@ public class GameManager implements View.OnClickListener{
         this.turn = turn;
     }
 
-    public Player getPlayerwithTurn()
-    {
-        if (playerUser.getColor()== turn)
+    //_____________________________________________
+    public GameManager() {
+        highScoreArray = new ArrayList<HighScore>();
+        initGlowAnim();
+    }
+
+    //_____________________________________________
+    public Player getPlayerwithTurn() {
+        if (playerUser.getColor() == turn)
             return playerUser;
         return playerComputer;
     }
 
-    public GameManager(CheckersActivity activity){
-        //highScoreArray = new ArrayList<HighScore>();
-        checkersActivity = activity;
+    //_____________________________________________
+    private void initGlowAnim() {
+        glowingCells = new ArrayList<>();
+        glowAnimation = AnimationUtils.loadAnimation(Globals.checkersActivity, R.anim.glow_anim);
     }
-    //___________________________________________-
-    public void initGame(){
+
+    //_____________________________________________
+    public void initGame() {
         animationDrawableArrayList = new ArrayList<>();
         imageViewArrayList = new ArrayList<>();
         gameBoard = new GameBoard(this);
@@ -85,15 +103,14 @@ public class GameManager implements View.OnClickListener{
         playerComputer.setStonesNum(INIT_STONES_NUM);
         playerUser.setRole(PlayerRole.USER);
         playerUser.setStonesNum(INIT_STONES_NUM);
-        backgroundImg = new ImageView(checkersActivity);
+        backgroundImg = new ImageView(Globals.checkersActivity);
         backgroundImg.setImageResource(gameBoard.getDrwableCellByColor(StoneColor.BLACK));
-        backgroundGlowImg = new ImageView(checkersActivity);
+        backgroundGlowImg = new ImageView(Globals.checkersActivity);
         backgroundGlowImg.setImageResource(gameBoard.getDrawableCellGlowCellByColor(StoneColor.BLACK));
-
-
     }
+
     //___________________________________________-
-    private void generateColor(){
+    private void generateColor() {
 //        Random rand = new Random();
 //        int colorNum = rand.nextInt(2)+1;
 //
@@ -109,104 +126,101 @@ public class GameManager implements View.OnClickListener{
         playerUser.setPlayerStoneColor(StoneColor.WHITE);
         playerComputer.setPlayerStoneColor(StoneColor.BLACK);
     }
-    //__________________________________________
-    public void saveData(){
-        DataManager.getInstance().saveData(playerUser.getName(),"player_name");
-        DataManager.getInstance().saveData(gameBoard.getBoard(),"game_board_data");
-        DataManager.getInstance().saveData(GameBoard.BOARD_SIZE,"game_board_size");
+
+    //_____________________________________________________________
+    public void saveData() {
+        DataManager.getInstance().saveData(playerUser.getName(), "player_name");
+        DataManager.getInstance().saveData(gameBoard.getBoard(), "game_board_data");
+        DataManager.getInstance().saveData(GameBoard.BOARD_SIZE, "game_board_size");
     }
 
+    //_____________________________________________________________
     public GameBoard getGameBoard() {
         return gameBoard;
     }
 
+    //_____________________________________________________________
     public void setGameBoard(GameBoard gameBoard) {
         this.gameBoard = gameBoard;
     }
 
+    //_____________________________________________________________
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClick(View view) {
-        if(view instanceof ImageView){
+        if (view instanceof ImageView) {
             Stone clickedStone = findClickedStone((ImageView) view);
             Location clickedLocation = Location.getLocationfromString(view.getTag().toString());
             lastClickedLocation = clickedLocation;
-            if(clickedStone != null&&clickedStone.getStoneColor() == playerUser.getColor()){
+            if (clickedStone != null && clickedStone.getStoneColor() == playerUser.getColor()) {
                 //clicked on some user stone
-                Log.i("onClick: GameManager:", ""+clickedStone.toString());
-                LinkedHashSet<Location> validMoves = GameRules.getValidMoves(clickedStone,gameBoard);
-                Log.i("onClick: GameManager:", "valid moves:"+validMoves.toString());
-                if (!validMoves.isEmpty())
-                {
-                    if (last_clicked_stone != null)
-                    {
+                Log.i("onClick: GameManager:", "" + clickedStone.toString());
+                LinkedHashSet<Location> validMoves = GameRules.getValidMoves(clickedStone, gameBoard);
+                Log.i("onClick: GameManager:", "valid moves:" + validMoves.toString());
+                if (!validMoves.isEmpty()) {
+                    if (last_clicked_stone != null) {
                         // user clicked on same stone or different stone before actually moving
-                        if (!clickedStone.equals(last_clicked_stone))
-                        {
+                        if (!clickedStone.equals(last_clicked_stone)) {
                             //user clicked on different stone: clear previous marked and cells mark new cells
-                            if (lastvalidMoves!=null) {unmarkPossibleMovesOnBoard();}
+                            if (lastvalidMoves != null) {
+                                unmarkPossibleMovesOnBoard();
+                            }
                             markPossibleMovesOnBoard(validMoves);
                             lastvalidMoves = validMoves;
                         }
-                    }
-                    else
-                    {
+                    } else {
                         //first time click
                         markPossibleMovesOnBoard(validMoves);
                         lastvalidMoves = validMoves;
                     }
-                    if (!waiting_for_movement) { waiting_for_movement = true; }
-                }
-                else {
+                    if (!waiting_for_movement) {
+                        waiting_for_movement = true;
+                    }
+                } else {
                     //has no valid moves
-                    if (last_clicked_stone != null && lastvalidMoves!= null) {
+                    if (last_clicked_stone != null && lastvalidMoves != null) {
                         //clear previous marked cell
 //                        markPossibleMovesOnBoard(lastvalidMoves,true);
                         unmarkPossibleMovesOnBoard();
                         lastvalidMoves = null;
                     }
-                    if (waiting_for_movement) {waiting_for_movement = false;}
+                    if (waiting_for_movement) {
+                        waiting_for_movement = false;
+                    }
                     new StyleableToast
                             .Builder(Globals.checkersActivity)
                             .text(Globals.checkersActivity.getResources().getString(R.string.no_moves))
                             .textColor(android.graphics.Color.WHITE)
                             .backgroundColor(Color.MAGENTA)
-                            .length( Toast.LENGTH_SHORT)
+                            .length(Toast.LENGTH_SHORT)
                             .show();
 
                 }
                 last_clicked_stone = clickedStone;
             } //end clickedStone != null
-            else
-            {
-                if (waiting_for_movement)
-                {
+            else {
+                if (waiting_for_movement) {
                     //player clicked on empty frame  and wants to move somewhere
-                    if (lastvalidMoves!=null&& last_clicked_stone!=null)
-                    {
-                        if (!lastvalidMoves.contains(clickedLocation))
-                        {
+                    if (lastvalidMoves != null && last_clicked_stone != null) {
+                        if (!lastvalidMoves.contains(clickedLocation)) {
                             //invalid move attempt
                             new StyleableToast
                                     .Builder(Globals.checkersActivity)
                                     .text(Globals.checkersActivity.getResources().getString(R.string.invalid_move))
                                     .textColor(android.graphics.Color.WHITE)
                                     .backgroundColor(android.graphics.Color.MAGENTA)
-                                    .length( Toast.LENGTH_SHORT)
+                                    .length(Toast.LENGTH_SHORT)
                                     .show();
                             return;
 
 
                         }
-                        if (clickedLocation.getEatsLocation()!=null)
-                        {
-                            moveAndEatStone(last_clicked_stone,clickedLocation.getEatsLocation(),clickedLocation);
-                        }
-                        else moveStone(last_clicked_stone,clickedLocation);
+                        if (clickedLocation.getEatsLocation() != null) {
+                            moveAndEatStone(last_clicked_stone, clickedLocation.getEatsLocation(), clickedLocation);
+                        } else moveStone(last_clicked_stone, clickedLocation);
                         waiting_for_movement = false;
-                    }
-                    else
+                    } else
                         last_clicked_stone = null;
 
 
@@ -215,60 +229,63 @@ public class GameManager implements View.OnClickListener{
         }
     }
 
+    //_____________________________________________________________
     //mark all possible moves on board
-    private void markPossibleMovesOnBoard(Set<Location> locations)
-    {
+    private void markPossibleMovesOnBoard(Set<Location> locations) {
+        unmarkPossibleMovesOnBoard();
         //create new animation for new cells
-        for (Location location:locations)
-        {
-            AnimationDrawable lastAnimationDrable = new AnimationDrawable();
+        for (Location location : locations) {
 
             RelativeLayout grid_frame = gameBoard.getLayoutatLocation(location);
-            if (grid_frame!= null)
-            {
-                ImageView origImage = grid_frame.findViewWithTag(gameBoard.BACKGROUND_TAG+":"+location);
-                imageViewArrayList.add(origImage);
+            if (grid_frame != null) {
+                ImageView imageBG = grid_frame.findViewWithTag(gameBoard.BACKGROUND_TAG + ":" + location);
+                imageBG.startAnimation(glowAnimation);
+                glowingCells.add(imageBG);
+                //AnimationDrawable lastAnimationDrable = new AnimationDrawable();
+                //ImageView origImage = grid_frame.findViewWithTag(gameBoard.BACKGROUND_TAG+":"+location);
+                //imageViewArrayList.add(origImage);
 //                ImageView backgroundImg = new ImageView(checkersActivity);
 //                backgroundImg.setImageResource(gameBoard.getDrwableCellByColor(StoneColor.BLACK));
 //                ImageView backgroundGlowImg = new ImageView(checkersActivity);
 //                backgroundGlowImg.setImageResource(gameBoard.getDrawableCellGlowCellByColor(StoneColor.BLACK));
-                lastAnimationDrable.addFrame(backgroundImg.getDrawable(),500);
-                lastAnimationDrable.addFrame(backgroundGlowImg.getDrawable(),500);
-                lastAnimationDrable.setOneShot(false);
-                origImage.setBackground(lastAnimationDrable);
+                //lastAnimationDrable.addFrame(backgroundImg.getDrawable(),500);
+                //lastAnimationDrable.addFrame(backgroundGlowImg.getDrawable(),500);
+                //lastAnimationDrable.setOneShot(false);
+                //origImage.setBackground(lastAnimationDrable);
 //                backgroundImg.post(new Runnable() {
 //                    @Override
 //                    public void run() {
 //                        lastAnimationDrable.start();
 //                    }
 //                });
-                lastAnimationDrable.start();
-                animationDrawableArrayList.add(lastAnimationDrable);
-
-
+                //lastAnimationDrable.start();
+                //animationDrawableArrayList.add(lastAnimationDrable);
             }
         }
-
     }
 
-    private void unmarkPossibleMovesOnBoard()
-    {
-        for (AnimationDrawable animationDrawable:animationDrawableArrayList) {
-            animationDrawable.stop();
+    //_________________________________________________________
+    private void unmarkPossibleMovesOnBoard() {
+        //for (AnimationDrawable animationDrawable:animationDrawableArrayList) {
+        //animationDrawable.stop();
+        // }
+        //for (ImageView imageView:imageViewArrayList)
+        //imageView.setBackground(backgroundImg.getDrawable());
+
+
+        //animationDrawableArrayList.clear();
+        //imageViewArrayList.clear();
+        for (int i = 0; i < glowingCells.size(); i++) {
+            glowingCells.get(i).clearAnimation();
         }
-        for (ImageView imageView:imageViewArrayList)
-            imageView.setBackground(backgroundImg.getDrawable());
-
-
-        animationDrawableArrayList.clear();
-        imageViewArrayList.clear();
     }
 
-    private Stone findClickedStone(ImageView image){
-        Stone stoneToRet=null;
-        for(int i=0;i<gameBoard.getActiveStones().size();i++){
+    //_________________________________________________________
+    private Stone findClickedStone(ImageView image) {
+        Stone stoneToRet = null;
+        for (int i = 0; i < gameBoard.getActiveStones().size(); i++) {
             Stone stone = gameBoard.getActiveStones().get(i);
-            if(stone.getLocation().equals(Location.getLocationfromString(image.getTag().toString()))){
+            if (stone.getLocation().equals(Location.getLocationfromString(image.getTag().toString()))) {
                 stoneToRet = gameBoard.getActiveStones().get(i);
                 break;
             }
@@ -276,12 +293,12 @@ public class GameManager implements View.OnClickListener{
         return stoneToRet;
     }
 
+    //_________________________________________________________
     /*`
     Moves stone on the grid with animation possibly eating stones on the way or becoming king
     update the Grid view and player score
     * */
-    private void moveStone(Stone stone, Location destination)
-    {
+    private void moveStone(Stone stone, Location destination) {
         //move the stone over the path using animation
         lastClickedLocation = destination;
         last_clicked_stone = stone;
@@ -291,21 +308,25 @@ public class GameManager implements View.OnClickListener{
         RelativeLayout currentParent = gameBoard.getLayoutatLocation(last_clicked_stone.getLocation());
         RelativeLayout newParent = gameBoard.getLayoutatLocation(lastClickedLocation);
         if (newParent == null) throw new AssertionError();
-        Transition move = new ChangeTransform().addTarget(iv).setDuration(500);
+        Transition move = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            move = new ChangeTransform().addTarget(iv).setDuration(500);
+        }
 
-        TransitionManager.beginDelayedTransition(newParent,move);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            TransitionManager.beginDelayedTransition(newParent, move);
+        }
         //handle post animation actions ( if doing that on TransitionEnd, it doesn't work properly)
         currentParent.removeView(iv);
         newParent.addView(iv);
         newParent.requestLayout();
         unmarkPossibleMovesOnBoard();
-        iv.setTag(gameBoard.STONE_TAG+":"+lastClickedLocation.toString());
-        gameBoard.changeStoneLocationOnBoard(last_clicked_stone.getLocation(),lastClickedLocation);
+        iv.setTag(gameBoard.STONE_TAG + ":" + lastClickedLocation.toString());
+        gameBoard.changeStoneLocationOnBoard(last_clicked_stone.getLocation(), lastClickedLocation);
         gameBoard.getStoneAtLocation(last_clicked_stone.getLocation()).setLocation(lastClickedLocation);
 
 
-        switch (getPlayerwithTurn().getRole())
-        {
+        switch (getPlayerwithTurn().getRole()) {
             case USER:
                 turn = playerComputer.getColor();
                 playAsComputer();
@@ -314,14 +335,12 @@ public class GameManager implements View.OnClickListener{
                 turn = playerUser.getColor();
                 break;
         }
-
     }
-    //
 
-    private void moveAndEatStone(Stone movedStone,Location eatenLocation,Location moveLocation)
-    {
+    //_________________________________________________________
+    private void moveAndEatStone(Stone movedStone, Location eatenLocation, Location moveLocation) {
         //first move the stone normally then eat
-        moveStone(movedStone,moveLocation);
+        moveStone(movedStone, moveLocation);
         lastClickedLocation = moveLocation;
         last_clicked_stone = movedStone;
         //get Layout (parent) of square
@@ -355,25 +374,23 @@ public class GameManager implements View.OnClickListener{
 
 
         //switch Turn and update score
-        switch (getPlayerwithTurn().getRole())
-        {
+        switch (getPlayerwithTurn().getRole()) {
             case USER:
                 turn = playerComputer.getColor();
-                playerComputer.setStonesNum(playerComputer.getStonesNum()-1);
-                checkersActivity.BlackScore.setText(playerComputer.getStonesNum()+"");
-                if (playerComputer.getStonesNum()==0)
-                {
+                playerComputer.setStonesNum(playerComputer.getStonesNum() - 1);
+                Globals.checkersActivity.BlackScore.setText(playerComputer.getStonesNum() + "");
+                if (playerComputer.getStonesNum() == 0) {
                     //User won
                     OnVictory(PlayerRole.USER);
                     return;
                 }
+
                 playAsComputer();
                 break;
             case COMPUTER:
-                playerUser.setStonesNum(playerUser.getStonesNum()-1);
-                checkersActivity.WhiteScore.setText(playerUser.getStonesNum()+"");
-                if (playerUser.getStonesNum()==0)
-                {
+                playerUser.setStonesNum(playerUser.getStonesNum() - 1);
+                Globals.checkersActivity.WhiteScore.setText(playerUser.getStonesNum() + "");
+                if (playerUser.getStonesNum() == 0) {
                     //Computer won
                     OnVictory(PlayerRole.COMPUTER);
                     return;
@@ -382,39 +399,39 @@ public class GameManager implements View.OnClickListener{
                 turn = playerUser.getColor();
                 break;
         }
-
-
     }
-    private void playAsComputer()
-    {
+
+    //_________________________________________________________
+    private void playAsComputer() {
         //find the first computer stone that has valid moves
 //        try {
 //            Thread.sleep(1000);
 //        } catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Stone selected = null;
         boolean has_eat_moves = false;
         boolean has_moves = false;
         LinkedHashSet<Location> validMoves = new LinkedHashSet<>();
-        HashMap<Stone,LinkedHashSet<Location>> allmoves = new HashMap<>();
+        HashMap<Stone, LinkedHashSet<Location>> allmoves = new HashMap<>();
 
-        for (Stone stone:gameBoard.getActiveStones())
-        {
-            if (stone.getStoneColor() == playerComputer.getColor())
-            {
-                validMoves = GameRules.getValidMoves(stone,gameBoard);
-                if (!validMoves.isEmpty())
-                {
+        for (Stone stone : gameBoard.getActiveStones()) {
+            if (stone.getStoneColor() == playerComputer.getColor()) {
+                validMoves = GameRules.getValidMoves(stone, gameBoard);
+                if (!validMoves.isEmpty()) {
                     selected = stone;
                     has_moves = true;
-                    allmoves.put(stone,validMoves);
+                    allmoves.put(stone, validMoves);
                 }
             }
         }
 
-        if (!has_moves)
-        {
+        if (!has_moves) {
             throw new RuntimeException("playAsComputer: didn't find any stone with valid moves");
         }
 
@@ -429,18 +446,17 @@ public class GameManager implements View.OnClickListener{
             }
         }
 
-        Location chosen_loc = Objects.requireNonNull(randomLocationFromSet(validMoves));
-        if (has_eat_moves)
-        {
-            moveAndEatStone(selected,chosen_loc.getEatsLocation(),chosen_loc);
+        Location chosen_loc = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            chosen_loc = Objects.requireNonNull(randomLocationFromSet(validMoves));
         }
-        else moveStone(selected, chosen_loc);
-
-
+        if (has_eat_moves) {
+            moveAndEatStone(selected, chosen_loc.getEatsLocation(), chosen_loc);
+        } else moveStone(selected, chosen_loc);
     }
 
     //__________________________________________
-    public void addHighScore(String name,int score) {
+    public void addHighScore(String name, int score) {
         if (highScoreArray.size() >= 10) {
             Collections.sort(highScoreArray, Collections.reverseOrder());
             highScoreArray.remove(highScoreArray.size() - 1);
@@ -448,35 +464,32 @@ public class GameManager implements View.OnClickListener{
         highScoreArray.add(new HighScore(name, score));
         DataManager.getInstance().saveData(highScoreArray, "high_scores");
     }
-
-    private Location randomLocationFromSet(LinkedHashSet<Location>locations)
-    {
+    //__________________________________________
+    private Location randomLocationFromSet(LinkedHashSet<Location> locations) {
         int size = locations.size();
         int item = new Random().nextInt(size); // In real life, the Random object should be rather more shared than this
         int i = 0;
-        for(Location loc : locations)
-        {
+        for (Location loc : locations) {
             if (i == item)
                 return loc;
             i++;
         }
-
         return null;
     }
 
-
-    private  void OnVictory(PlayerRole winner)
-    {
+    //__________________________________________
+    private void OnVictory(PlayerRole winner) {
         //TODO: handle victor and end game
-        switch (winner)
-        {
+        switch (winner) {
             case USER:
+                // deside what is the score of a winner
+                addHighScore(winner.name(), 0);
+                Intent highScoresActivity = new Intent(Globals.checkersActivity, HighScoreActivity.class);
+                Globals.checkersActivity.startActivity(highScoresActivity);
                 break;
             case COMPUTER:
                 break;
         }
     }
-
-
-
+    //__________________________________________
 }

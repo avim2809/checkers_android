@@ -28,21 +28,17 @@ public class CheckersActivity extends Activity implements DialogInterface.OnClic
         if (getIntent().hasExtra("name"))
         {
             userName = getIntent().getExtras().get("name").toString();
-
         }
         initGameSettings();
     }
-
     //___________________________________________
     private void initGameSettings(){
         Globals.gameBoardGrid = findViewById(R.id.game_board);
-        Globals.checkersActivity = this;
-        gameManager = new GameManager(this);
+        gameManager = new GameManager();
         gameManager.initGame();
         gameManager.getPlayerUser().setName(userName);
         BlackScore.setText(gameManager.INIT_STONES_NUM+"");
         WhiteScore.setText(gameManager.INIT_STONES_NUM+"");
-
     }
     //___________________________________________
     @Override
@@ -61,15 +57,13 @@ public class CheckersActivity extends Activity implements DialogInterface.OnClic
         //gameManager.saveData();
     }
     //___________________________________________
-
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         AlertDialog.Builder backButtonDialog = new AlertDialog.Builder(this);
         backButtonDialog.setTitle("Confirm Exit").setMessage("Would you like to save the gam?").setPositiveButton("Yes", this).setNegativeButton("No", this).setNeutralButton("Stay in game",this).show();
     }
-
+    //___________________________________________
     @Override
     public void onClick(DialogInterface dialogInterface, int i) {
         if(i == dialogInterface.BUTTON_POSITIVE){
@@ -84,4 +78,5 @@ public class CheckersActivity extends Activity implements DialogInterface.OnClic
             Toast.makeText(this, "stay in game ", Toast.LENGTH_SHORT).show();
         }
     }
+    //___________________________________________
 }

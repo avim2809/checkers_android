@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public class DataManager implements Serializable {
 
@@ -73,14 +74,14 @@ public class DataManager implements Serializable {
         sharedPrefEditor = sharedPreferences.edit();
     }
     //________________________________________________________
-//    public ArrayList<HighScore> loadHighScores(){
+   public ArrayList<HighScore> loadHighScores(){
 //        if(sharedPreferences.contains("first_run")){
 //            String highScoresString = sharedPreferences.getString("high_scores","");
 //            Type highScoresType = new TypeToken<ArrayList<HighScore>>(){}.getType();
 //            ArrayList<HighScore> highScores = gson.fromJson(highScoresString, highScoresType);
 //            return highScores;
 //        }
-//        return null;
-//    }
+       return null;
+   }
     //________________________________________________________
 }

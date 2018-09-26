@@ -37,24 +37,17 @@ public class GameBoard{
     private int blackCellGlow = R.drawable.black_cell_glow;
     private CheckersActivity context;
     private ArrayList<ImageView> glowingCells;
-    private Animation glowAnimation;
+
     private GameManager gameManager;
 
     public GameBoard(GameManager gm){
         gameBoardGrid = Globals.gameBoardGrid;
         context = Globals.checkersActivity;
         activeStones = new ArrayList<>();
-        initGameProps();
         gameManager = gm;
         locationViewHashMap = new HashMap<>();
         initBoard();
     }
-    //______________________________________
-    private void initGameProps(){
-        glowingCells = new ArrayList<>();
-        glowAnimation = AnimationUtils.loadAnimation(Globals.checkersActivity,R.anim.glow_anim);
-    }
-
     //______________________________________
     public void initComputerStones(StoneColor stoneColor){
         int playerStoneDrawable = getDrawableStoneByColor(stoneColor);
@@ -152,23 +145,29 @@ public class GameBoard{
                 currGlow = blackCellGlow;
             }
             for(int j=0; j<BOARD_SIZE; j++){
-                int cellIndex = (gameBoardGrid.getColumnCount() * i) + j;
+                int cellIndex = 0;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                    cellIndex = (gameBoardGrid.getColumnCount() * i) + j;
+                }
                 RelativeLayout frame =  new RelativeLayout(context);
                 Location location = new Location(j,i);
                 ImageView imageGlow = new ImageView(context);
                 imageGlow.setImageResource(currGlow);
                 imageGlow.setTag(GLOW_TAG+":"+location);
-                ImageView imageBG = new ImageView(context);
+
+                //ImageView imageBG = new ImageView(context);
                 ImageView imageBG1 = new ImageView(context);
-                imageBG.setImageResource(currColor);
-                imageBG1.setBackground(imageBG.getDrawable());
-                imageBG.setTag(BACKGROUND_TAG);
+                //imageBG.setImageResource(currColor);
+                //imageBG1.setBackground(imageBG.getDrawable());
+                imageBG1.setImageResource(currColor);
+                //imageBG.setTag(BACKGROUND_TAG);
                 imageBG1.setTag(BACKGROUND_TAG+":"+location);
-                imageBG.setOnClickListener(gameManager);
+                //imageBG.setOnClickListener(gameManager);
                 imageBG1.setOnClickListener(gameManager);
                 imageGlow.setOnClickListener(gameManager);
                 //frame.setBackgroundResource(currColor);
-                imageGlow.setVisibility(View.INVISIBLE);
+                //imageGlow.setVisibility(View.INVISIBLE);
+                frame.addView(imageGlow);
                 frame.addView(imageBG1);
                 //frame.addView(imageGlow);
                 if(currColor == whiteDrawableCell){
@@ -235,7 +234,6 @@ public class GameBoard{
     public RelativeLayout getLayoutatLocation(Location location)
     {
         return locationViewHashMap.get(location);
-
     }
 
     public Location getLocationFromLayout(RelativeLayout layout)
@@ -280,7 +278,7 @@ public class GameBoard{
     }
 
     //______________________________________
-    public void glowCells(ImageView cellToGlow){
+    /*public void glowCells(ImageView cellToGlow){
         cellToGlow.startAnimation(glowAnimation);
         glowingCells.add(cellToGlow);
     }
@@ -290,12 +288,8 @@ public class GameBoard{
             cellToGlowArray.get(i).startAnimation(glowAnimation);
             glowingCells.add(cellToGlowArray.get(i));
         }
-    }
+    }*/
     //______________________________________
-    public void removeGlow(){
-        for(int i=0;i<glowingCells.size();i++){
-            glowingCells.get(i).clearAnimation();
-        }
-    }
+
     //______________________________________
 }
