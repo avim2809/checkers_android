@@ -391,20 +391,25 @@ public final class GameRules {
     }
 
     public static boolean checkIfKingPositionAndSetKingState(Stone stone) {
-        int row = stone.getLocation().getRow();
-        StoneColor color = stone.getStoneColor();
-        boolean isking=false;
-        if (color == Globals.userStoneColor) {
-            if (row == 0) {
-                stone.makeKing();
-                isking=true;
-            }
-        } else {
+        boolean isking = false;
+        if (!stone.isKing()) {
+            int row = stone.getLocation().getRow();
+            StoneColor color = stone.getStoneColor();
 
-            if (row == GameBoard.BOARD_SIZE - 1) {
-                stone.makeKing();
-                isking=true;
+
+            if (color == Globals.userStoneColor) {
+                if (row == 0) {
+                    stone.makeKing();
+                    isking = true;
+                }
+            } else {
+
+                if (row == GameBoard.BOARD_SIZE - 1) {
+                    stone.makeKing();
+                    isking = true;
+                }
             }
+            return isking;
         }
 
         return isking;

@@ -17,6 +17,7 @@ import com.example.san4o.checkers.activity.HighScoreActivity;
 import com.example.san4o.checkers.enums.PlayerRole;
 import com.example.san4o.checkers.enums.StoneColor;
 import com.muddzdev.styleabletoastlibrary.StyleableToast;
+import com.plattysoft.leonids.ParticleSystem;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -302,7 +303,7 @@ public class GameManager implements View.OnClickListener {
         currImageView.setTag(gameBoard.STONE_TAG + ":" + lastClickedLocation.toString());
         gameBoard.changeStoneLocationOnBoard(last_clicked_stone.getLocation(), lastClickedLocation);
         gameBoard.getStoneAtLocation(last_clicked_stone.getLocation()).setLocation(lastClickedLocation);
-        if(GameRules.checkIfKingPositionAndSetKingState(stone)){
+        if (GameRules.checkIfKingPositionAndSetKingState(stone)) {
             makeKing(stone);
         }
         if (!eat_turn) {
@@ -523,21 +524,18 @@ public class GameManager implements View.OnClickListener {
     }
     //__________________________________________
 
-    private void makeKing(Stone stone){
+    private void makeKing(Stone stone) {
         int kingDrawable = 0;
+            if (stone.getStoneColor() == StoneColor.BLACK) {
+                kingDrawable = R.drawable.black_stone_king;
+            } else {
+                kingDrawable = R.drawable.white_stone_king;
+            }
 
-        if(stone.getStoneColor() == StoneColor.BLACK){
-            kingDrawable = R.drawable.black_stone_king;
-        }else
-        {
-            kingDrawable = R.drawable.white_stone_king;
-        }
-
-        RelativeLayout currentParent = gameBoard.getLayoutatLocation(stone.getLocation());
-        ImageView imageToMove = currentParent.findViewWithTag(gameBoard.STONE_TAG + ":" + stone.getLocation().toString());
-        imageToMove.setBackgroundResource(kingDrawable);
-        soundsManager.playkingSound();
-
+            RelativeLayout currentParent = gameBoard.getLayoutatLocation(stone.getLocation());
+            ImageView imageToMove = currentParent.findViewWithTag(gameBoard.STONE_TAG + ":" + stone.getLocation().toString());
+            imageToMove.setBackgroundResource(kingDrawable);
+            soundsManager.playkingSound();
     }
     //__________________________________________
 }
