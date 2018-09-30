@@ -1,9 +1,11 @@
 package com.example.san4o.checkers;
 
+import android.util.Log;
+
 public class Location {
 
-    private int x;
-    private int y;
+    private int col;
+    private int row;
     private Location eatsLocation=null;
 
     public boolean isEatenLocation() {
@@ -29,39 +31,39 @@ public class Location {
 
 
 
-    public Location(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Location(int col, int row) {
+        this.col = col;
+        this.row = row;
         eatsLocation = null;
     }
 
-    public int getX() {
-        return x;
+    public int getCol() {
+        return col;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setCol(int col) {
+        this.col = col;
     }
 
-    public int getY() {
-        return y;
+    public int getRow() {
+        return row;
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setRow(int row) {
+        this.row = row;
     }
 
     public boolean isBetween(final Location location1, final Location location2) {
         // checks if this location is in between 2 other locations
-        final int maxX = Math.max(location1.getX(), location2.getX());
-        final int maxY = Math.max(location1.getY(), location2.getY());
-        final int minX = Math.min(location1.getX(), location2.getX());
-        final int minY = Math.min(location1.getY(), location2.getY());
+        final int maxX = Math.max(location1.getCol(), location2.getCol());
+        final int maxY = Math.max(location1.getRow(), location2.getRow());
+        final int minX = Math.min(location1.getCol(), location2.getCol());
+        final int minY = Math.min(location1.getRow(), location2.getRow());
 
-        return this.x == minX + 1
-                && this.x == maxX - 1
-                && this.y == minY + 1
-                && this.y == maxY - 1;
+        return this.col == minX + 1
+                && this.col == maxX - 1
+                && this.row == minY + 1
+                && this.row == maxY - 1;
     }
 
     @Override
@@ -70,8 +72,8 @@ public class Location {
         if (obj ==null || obj.getClass() != getClass()) return false;
 
         Location location = (Location) obj;
-        if (x != location.x) return false;
-        if (y != location.y) return false;
+        if (col != location.col) return false;
+        if (row != location.row) return false;
         return true;
 
     }
@@ -79,13 +81,13 @@ public class Location {
     @Override
     public String toString() {
         String str = "";
-        str = String.valueOf(x) + "," + String.valueOf(y);
+        str = String.valueOf(col) + "," + String.valueOf(row);
         return str;
     }
 
     public int hashCode() {
-        int result = x;
-        result = 31 * result + y;
+        int result = col;
+        result = 31 * result + row;
         return result;
     }
 
@@ -101,11 +103,10 @@ public class Location {
         if ((cords.length != 2)) throw new AssertionError();
         int x = Integer.parseInt(cords[0]);
         int y = Integer.parseInt(cords[1]);
-        location.setX(x);
-        location.setY(y);
+        location.setCol(x);
+        location.setRow(y);
+        Log.i("loc = ", location.toString());
         return location;
-
-
     }
 
     public static double getDistance(Location p1,Location p2)
@@ -119,10 +120,9 @@ public class Location {
         if (p1.equals(p2))
             res = 0;
         double d1,d2;
-        d1 = (p1.getX()-p2.getX())*(p1.getX()-p2.getX());
-        d2 = (p1.getY()-p2.getY())*(p1.getY()-p2.getY());
+        d1 = (p1.getCol()-p2.getCol())*(p1.getCol()-p2.getCol());
+        d2 = (p1.getRow()-p2.getRow())*(p1.getRow()-p2.getRow());
         res = Math.sqrt(d1+d2);
         return res;
-
     }
 }

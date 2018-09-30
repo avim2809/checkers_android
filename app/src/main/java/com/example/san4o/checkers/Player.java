@@ -9,6 +9,15 @@ public class Player {
     protected GameBoard gameBoard;
     protected Stone[][] updatedBoardStones;
     private boolean turn = false;
+    private int movesCount=0;
+
+    public int getMovesCount(){
+        return movesCount;
+    }
+
+    public void addMove(){
+        this.movesCount++;
+    }
 
     public PlayerRole getRole() {
         return role;

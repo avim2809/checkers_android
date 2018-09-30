@@ -37,6 +37,8 @@ public class CheckersActivity extends Activity implements DialogInterface.OnClic
         gameManager = new GameManager();
         gameManager.initGame();
         gameManager.getPlayerUser().setName(userName);
+        Globals.userStoneColor = gameManager.getPlayerUser().getColor();
+        Globals.computerStoneColor = gameManager.getPlayerComputer().getColor();
         BlackScore.setText(gameManager.INIT_STONES_NUM+"");
         WhiteScore.setText(gameManager.INIT_STONES_NUM+"");
     }
