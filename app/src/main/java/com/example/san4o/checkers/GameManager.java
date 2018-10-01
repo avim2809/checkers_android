@@ -17,10 +17,10 @@ import com.example.san4o.checkers.activity.HighScoreActivity;
 import com.example.san4o.checkers.enums.PlayerRole;
 import com.example.san4o.checkers.enums.StoneColor;
 import com.muddzdev.styleabletoastlibrary.StyleableToast;
-import com.plattysoft.leonids.ParticleSystem;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -55,9 +55,15 @@ public class GameManager implements View.OnClickListener {
         glowingCells = new ArrayList<>();
         invisibleCells = new ArrayList<>();
         animationManager = new AnimationManager();
-        highScoreArray = new ArrayList<HighScore>();
+
         soundsManager = new SoundsManager();
         handler = new Handler();
+
+        if(Globals.highScoreTable == null){
+        highScoreArray = new ArrayList<HighScore>();
+        }else{
+            highScoreArray = Globals.highScoreTable;
+        }
     }
 
     //_____________________________________________
@@ -399,6 +405,7 @@ public class GameManager implements View.OnClickListener {
                 Globals.checkersActivity.WhiteScore.setText(playerUser.getStonesNum() + "");
                 if (playerUser.getStonesNum() == 0) {
                     OnVictory(PlayerRole.COMPUTER);
+                    soundsManager.playLossSound();
                     return;
                 }
 
@@ -483,12 +490,24 @@ public class GameManager implements View.OnClickListener {
 
     //__________________________________________
     public void addHighScore(String name, int score) {
-        if (highScoreArray.size() >= 10) {
-            Collections.sort(highScoreArray, Collections.reverseOrder());
-            highScoreArray.remove(highScoreArray.size() - 1);
-        }
+
+
         highScoreArray.add(new HighScore(name, score));
+        Collections.sort(highScoreArray,new Comparator<HighScore>() {
+
+            @Override
+            public int compare(HighScore high1, HighScore high2) {
+                return (high1.getScore()-high2.getScore());
+            }
+        });
         DataManager.getInstance().saveData(highScoreArray, "high_scores");
+
+//        if (highScoreArray.size() >= 10) {
+//            Collections.sort(highScoreArray, Collections.reverseOrder());
+//            highScoreArray.remove(highScoreArray.size() - 1);
+//        }
+//
+//
     }
 
     //__________________________________________
@@ -513,14 +532,16 @@ public class GameManager implements View.OnClickListener {
         //TODO: handle victor and end game
         switch (winner) {
             case USER:
-                // deside what is the score of a winner
                 addHighScore(playerUser.getName(), playerUser.getMovesCount());
-                Intent highScoresActivity = new Intent(Globals.checkersActivity, HighScoreActivity.class);
-                Globals.checkersActivity.startActivity(highScoresActivity);
+                Globals.highScoreTable = highScoreArray;
+                DataManager.getInstance().saveData(highScoreArray,"high_scores");
                 break;
             case COMPUTER:
                 break;
         }
+
+        Intent highScoresActivity = new Intent(Globals.checkersActivity, HighScoreActivity.class);
+        Globals.checkersActivity.startActivity(highScoresActivity);
     }
     //__________________________________________
 
@@ -535,7 +556,7 @@ public class GameManager implements View.OnClickListener {
             RelativeLayout currentParent = gameBoard.getLayoutatLocation(stone.getLocation());
             ImageView imageToMove = currentParent.findViewWithTag(gameBoard.STONE_TAG + ":" + stone.getLocation().toString());
             imageToMove.setBackgroundResource(kingDrawable);
-            soundsManager.playkingSound();
+            soundsManager.playKingSound();
     }
     //__________________________________________
 }

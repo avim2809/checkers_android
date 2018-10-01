@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.BounceInterpolator;
@@ -15,8 +16,11 @@ import android.widget.EditText;
 
 import com.example.san4o.checkers.DataManager;
 import com.example.san4o.checkers.Globals;
+import com.example.san4o.checkers.HighScore;
 import com.example.san4o.checkers.R;
 import com.muddzdev.styleabletoastlibrary.StyleableToast;
+
+import java.util.ArrayList;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
@@ -26,6 +30,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private Button highScore;
     private Button about;
     private Button start;
+    private String name;
     private final Handler handler = new Handler();
 
     @Override
@@ -38,6 +43,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         nameEditText = findViewById(R.id.name);
 
+        initData();
         makeEntrance();
         start.setOnClickListener(this);
         rules.setOnClickListener(this);
@@ -53,34 +59,48 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 .show();
     }
 
+    private void initData(){
+        name = DataManager.getInstance().loadPlayerName();
+        if(!name.equals("")){
+            nameEditText.setText(name.toString());
+        }
+
+        ArrayList<HighScore> highScoreArrayList = DataManager.getInstance().loadHighScores();
+        if(highScoreArrayList != null){
+            Globals.highScoreTable = highScoreArrayList;
+        }
+    }
+    //_______________________________________________
     private void makeEntrance() {
         int[] location = new int[2];
         rules = findViewById(R.id.rules);
         rules.getLocationInWindow(location);
+        Log.i("rules x loc", String.valueOf(location[0]));
         highScore = findViewById(R.id.highScores);
         about = findViewById(R.id.about);
         start = findViewById(R.id.start);
 
 
         start.getLocationInWindow(location);
-        startAnim(start, location.clone(), 500);
+        startAnim(start, location.clone(), 100);
 
         highScore.getLocationInWindow(location);
-        startAnim(highScore, location.clone(), 500);
+        startAnim(highScore, location.clone(), 300);
 
 
         startAnim(rules, location.clone(), 500);
 
         about.getLocationInWindow(location);
-        startAnim(about, location.clone(), 500);
+        startAnim(about, location.clone(), 700);
     }
-
+    //_______________________________________________
     private void startAnim(View view, int[] location, int delay) {
 
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                TranslateAnimation anim = new TranslateAnimation(-300, location[0], location[1], location[1]);
+                view.setVisibility(View.VISIBLE);
+                TranslateAnimation anim = new TranslateAnimation(-700, location[0], location[1], location[1]);
                 anim.setRepeatCount(0);
                 anim.setDuration(2000);
                 anim.setInterpolator(new BounceInterpolator());
@@ -88,7 +108,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
         }, delay);
     }
-
+    //_______________________________________________
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.rules) {
@@ -101,31 +121,31 @@ public class MainActivity extends Activity implements View.OnClickListener {
             clickOnStart();
         }
     }
-
-    private void clickOnHighScore() {
-    }
+    //_______________________________________________
 
     private void clickOnRules() {
         Intent rulesIntent = new Intent(this, RulesActivity.class);
         startActivity(rulesIntent);
     }
-
-//    private void clickOnHighScore(){
-//        Intent highScoreIntent = new Intent(this,HighScoreActivity.class);
-//        startActivity(highScoreIntent);
-//    }
-
+    //_______________________________________________
+    private void clickOnHighScore(){
+        Intent highScoreIntent = new Intent(this,HighScoreActivity.class);
+        startActivity(highScoreIntent);
+    }
+    //_______________________________________________
     private void clickOnAbout() {
         Intent aboutIntent = new Intent(this, AboutAvtivity.class);
         startActivity(aboutIntent);
     }
-
+    //_______________________________________________
     private void clickOnStart() {
         String userName = nameEditText.getText().toString();
         if (!userName.equals("")) {
+            DataManager.getInstance().saveName(nameEditText.getText().toString());
             Intent gameIntent = new Intent(this, CheckersActivity.class);
             gameIntent.putExtra("name", userName);
             startActivity(gameIntent);
         }
     }
+    //_______________________________________________
 }

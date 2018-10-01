@@ -8,7 +8,8 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:iconifiedByDefault">@drawable/icon_mini</item>
         <item name="android:icon">@drawable/icon</item>
-
+        <item name="android:itemBackground">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/colorAccent</item>
     </style>
 
 </resources>
