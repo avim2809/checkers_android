@@ -84,7 +84,7 @@
 ////    {
 ////        for (Location location:locations)
 ////        {
-////            RelativeLayout grid_frame = gameBoard.getLayoutatLocation(location);
+////            RelativeLayout grid_frame = gameBoard.getLayoutAtLocation(location);
 ////            if (grid_frame!= null)
 ////            {
 ////                ImageView frameImage = grid_frame.findViewWithTag(gameBoard.BACKGROUND_TAG);

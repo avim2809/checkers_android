@@ -31,7 +31,9 @@
         android:layout_marginBottom="20dp"
         android:orientation="vertical">
 
-
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
         <TableLayout
             android:id="@+id/high_scores_table"
             android:layout_width="match_parent"
@@ -43,8 +45,8 @@
             android:alpha="0.8"
             android:gravity="center_horizontal"
             android:scrollbarAlwaysDrawVerticalTrack="true"
-            android:stretchColumns="*"
-            >
+            android:isScrollContainer="true"
+            android:stretchColumns="*">
 
             <!--<TableRow
                 android:id="@+id/tableRow1"
@@ -124,6 +126,7 @@
                     android:text="6°F"></TextView>
             </TableRow>-->
         </TableLayout>
+        </ScrollView>
     </LinearLayout>
 
     <Button

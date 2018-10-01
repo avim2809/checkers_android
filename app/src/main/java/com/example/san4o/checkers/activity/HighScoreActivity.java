@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Typeface;
-import android.provider.Settings;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,14 +12,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.san4o.checkers.DataManager;
 import com.example.san4o.checkers.Globals;
 import com.example.san4o.checkers.HighScore;
 import com.example.san4o.checkers.R;
@@ -47,23 +43,19 @@ public class HighScoreActivity extends AppCompatActivity implements View.OnClick
         Button backBtn = findViewById(R.id.back);
         backBtn.setOnClickListener(this);
 
-
         initHighScoresTable();
     }
 
     //_________________________________________________
     @SuppressLint("ResourceAsColor")
     private void initHighScoresTable() {
-        //ArrayList<HighScore> highScores = DataManager.getInstance().loadHighScores();
         ArrayList<HighScore> highScores = Globals.highScoreTable;
 
         if (highScores != null) {
-
-            Collections.sort(highScores,new Comparator<HighScore>() {
-
+            Collections.sort(highScores, new Comparator<HighScore>() {
                 @Override
                 public int compare(HighScore high1, HighScore high2) {
-                    return (high2.getScore()-high1.getScore());
+                    return (high1.getScore() - high2.getScore());
                 }
             });
 
@@ -76,7 +68,7 @@ public class HighScoreActivity extends AppCompatActivity implements View.OnClick
             TextView firstName = createTextView(res.getString(R.string.name));
             firstName.setTextSize(20);
 
-            TextView firstScore = createTextView(res.getString(R.string.score));
+            TextView firstScore = createTextView(res.getString(R.string.Moves));
             firstScore.setTextSize(20);
 
             firstTableRow.addView(firstName);
@@ -102,6 +94,11 @@ public class HighScoreActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+    }
+
     //_________________________________________________
     private TextView createTextView(String text) {
         TextView textToRet = new TextView(this);
@@ -118,7 +115,8 @@ public class HighScoreActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.back) {
-            finish();
+            Intent mainIntent = new Intent(this, MainActivity.class);
+            startActivity(mainIntent);
         }
     }
 
@@ -149,7 +147,7 @@ public class HighScoreActivity extends AppCompatActivity implements View.OnClick
 
     //_________________________________________________
     private void shareHighScores() {
-        String message = "Check out the high score: \n";
+        String message = "Check out the high score table: \n";
         ArrayList<HighScore> highScoreArrayList = Globals.highScoreTable;
         if (highScoreArrayList != null && highScoreArrayList.size() > 0) {
             for (int i = 0; i < highScoreArrayList.size(); i++) {

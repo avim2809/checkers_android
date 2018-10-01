@@ -15,8 +15,9 @@ public class GameBoard{
 
     /*GUI Layout HIERARCHY
     * GridLayout -->contains-->RelativeLayout-->contains-->
-    * 1.ImageView(Cell BackGround)
-    * 2.ImageView(Glow Background)
+    * 1.ImageView(RED Glow Background
+    * 2.ImageView(GREEN Glow Background
+    * 2.ImageView(color background)
     *
     * */
     public static int BOARD_SIZE=8;
@@ -81,28 +82,12 @@ public class GameBoard{
     }
     //______________________________________
     public void initComputerStones(StoneColor stoneColor){
-        int playerStoneDrawable = getDrawableStoneByColor(stoneColor);
-        Stone currStoneToAdd;
+        //int playerStoneDrawable = getDrawableStoneByColor(stoneColor);
+        //Stone currStoneToAdd;
 
         for(int i=0;i<3;i++){
             for(int j=0;j<BOARD_SIZE;j++){
                 if((i+j)%2==1){
-                    /*int currCellIndex = (gameBoardGrid.getColumnCount() * i) + j;
-                    RelativeLayout frame = (RelativeLayout) gameBoardGrid.getChildAt(currCellIndex);
-                    Location location = new Location(j,i);
-                    ImageView stoneImage =  new ImageView(context);
-                    stoneImage.setTag(STONE_TAG+":"+location.toString());
-                    stoneImage.setBackgroundResource(playerStoneDrawable);
-                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    params.setMargins(2, 2, 2, 2);
-                    params.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
-                    stoneImage.setLayoutParams(params);
-                    currStoneToAdd = new Stone(StoneColor.BLACK,currCellIndex,location);
-                    currStoneToAdd.setLocation(location);
-                    currStoneToAdd.setRelativeLayout(frame);
-                    addStone(currStoneToAdd);
-                    //listener.addStone(currStoneToAdd);
-                    frame.addView(stoneImage);*/
                     createAndAddStone(i,j,StoneColor.BLACK);
                 }
             }
@@ -110,30 +95,11 @@ public class GameBoard{
     }
     //______________________________________
     public void initUserStones(StoneColor stoneColor){
-        int playerStoneDrawable = getDrawableStoneByColor(stoneColor);
-        Stone currStoneToAdd;
+        //int playerStoneDrawable = getDrawableStoneByColor(stoneColor);
 
         for(int i=BOARD_SIZE-1;i>BOARD_SIZE-4;i--){
             for(int j=BOARD_SIZE-1;j>=0;j--){
                 if((i+j)%2==1){
-                    /*int currCellIndex = (gameBoardGrid.getColumnCount() * i) + j;
-                    RelativeLayout frame = (RelativeLayout) gameBoardGrid.getChildAt(currCellIndex);
-                    Location location = new Location(j,i);
-                    ImageView stoneImage =  new ImageView(context);
-                    stoneImage.setScaleType(ImageView.ScaleType.FIT_XY);
-
-                    stoneImage.setTag(STONE_TAG+":"+location.toString());
-                    stoneImage.setBackgroundResource(playerStoneDrawable);
-                    stoneImage.setOnClickListener(gameManager);
-                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    params.setMargins(2, 2, 2, 2);
-                    params.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
-                    stoneImage.setLayoutParams(params);
-                    currStoneToAdd = new Stone(StoneColor.WHITE,currCellIndex,location);
-                    currStoneToAdd.setLocation(location);
-                    currStoneToAdd.setRelativeLayout(frame);
-                    addStone(currStoneToAdd);
-                    frame.addView(stoneImage);*/
                     createAndAddStone(i,j,StoneColor.WHITE);
                 }
             }
@@ -152,12 +118,12 @@ public class GameBoard{
     }
 
     //______________________________________
-    public int getDrwableCellByColor(StoneColor stoneColor)
-    {
-        if (stoneColor == StoneColor.BLACK)
-            return blackDrawableCell;
-        return whiteDrawableCell;
-    }
+//    public int getDrwableCellByColor(StoneColor stoneColor)
+//    {
+//        if (stoneColor == StoneColor.BLACK)
+//            return blackDrawableCell;
+//        return whiteDrawableCell;
+//    }
     //______________________________________
     private void initBoard(){
         stones = new Stone[BOARD_SIZE][BOARD_SIZE];
@@ -257,7 +223,7 @@ public class GameBoard{
         return locationViewHashMap;
     }
     //______________________________________
-    public RelativeLayout getLayoutatLocation(Location location)
+    public RelativeLayout getLayoutAtLocation(Location location)
     {
         return locationViewHashMap.get(location);
     }
@@ -268,8 +234,8 @@ public class GameBoard{
     //______________________________________
     public ImageView getStoneImageViewAtLocation(Location location)
     {
-        ImageView ret= null;
-        RelativeLayout layout = getLayoutatLocation(location);
+        ImageView ret;
+        RelativeLayout layout = getLayoutAtLocation(location);
         assert (layout!=null);
         ret = layout.findViewWithTag(STONE_TAG+":"+location.toString());
         return ret;
@@ -282,11 +248,7 @@ public class GameBoard{
     public void setGameManager(GameManager gameManager) {
         this.gameManager = gameManager;
     }
-    //______________________________________
-    public void onBecomingKing(Stone stone)
-    {
-        //TODO: add animation for becoming king
-    }
+
     //______________________________________
     public void removeStoneAtLocation(Location location)
     {

@@ -1,6 +1,5 @@
 package com.example.san4o.checkers;
 
-import android.graphics.Color;
 import android.util.Log;
 
 import com.example.san4o.checkers.enums.StoneColor;
@@ -378,20 +377,17 @@ public final class GameRules {
             if (stone.getStoneColor() == StoneColor.WHITE) {
                 if (stone.getLocation().getRow() == GameBoard.BOARD_SIZE - 1) {
                     stone.makeKing();
-                    game.getGameBoard().onBecomingKing(stone);
-
                 }
             } else if (stone.getStoneColor() == StoneColor.BLACK) {
                 if (stone.getLocation().getRow() == 0) {
                     stone.makeKing();
-                    game.getGameBoard().onBecomingKing(stone);
                 }
             }
         }
     }
 
     public static boolean checkIfKingPositionAndSetKingState(Stone stone) {
-        boolean isking = false;
+        boolean isKing = false;
         if (!stone.isKing()) {
             int row = stone.getLocation().getRow();
             StoneColor color = stone.getStoneColor();
@@ -400,19 +396,18 @@ public final class GameRules {
             if (color == Globals.userStoneColor) {
                 if (row == 0) {
                     stone.makeKing();
-                    isking = true;
+                    isKing = true;
                 }
             } else {
 
                 if (row == GameBoard.BOARD_SIZE - 1) {
                     stone.makeKing();
-                    isking = true;
+                    isKing = true;
                 }
             }
-            return isking;
+            return isKing;
         }
-
-        return isking;
+        return isKing;
     }
 
 

@@ -59,9 +59,9 @@ public class GameManager implements View.OnClickListener {
         soundsManager = new SoundsManager();
         handler = new Handler();
 
-        if(Globals.highScoreTable == null){
-        highScoreArray = new ArrayList<HighScore>();
-        }else{
+        if (Globals.highScoreTable == null) {
+            highScoreArray = new ArrayList<HighScore>();
+        } else {
             highScoreArray = Globals.highScoreTable;
         }
     }
@@ -240,7 +240,7 @@ public class GameManager implements View.OnClickListener {
     private void markPossibleMovesOnBoard(Set<Location> locations) {
         unmarkPossibleMovesOnBoard();
         for (Location location : locations) {
-            RelativeLayout grid_frame = gameBoard.getLayoutatLocation(location);
+            RelativeLayout grid_frame = gameBoard.getLayoutAtLocation(location);
             if (grid_frame != null) {
                 ImageView imageBG = grid_frame.findViewWithTag(gameBoard.BACKGROUND_TAG + ":" + location);
 
@@ -295,8 +295,8 @@ public class GameManager implements View.OnClickListener {
         ImageView currImageView = getGameBoard().getStoneImageViewAtLocation(last_clicked_stone.getLocation());
 
         if ((currImageView == null)) throw new AssertionError();
-        RelativeLayout currentParent = gameBoard.getLayoutatLocation(last_clicked_stone.getLocation());
-        RelativeLayout newParent = gameBoard.getLayoutatLocation(lastClickedLocation);
+        RelativeLayout currentParent = gameBoard.getLayoutAtLocation(last_clicked_stone.getLocation());
+        RelativeLayout newParent = gameBoard.getLayoutAtLocation(lastClickedLocation);
 
         if (newParent == null) throw new AssertionError();
 
@@ -348,7 +348,7 @@ public class GameManager implements View.OnClickListener {
 
         //Stone eatenStone = gameBoard.getStoneAtLocation(eatenLocation);
         ImageView eatenImageViewStone = gameBoard.getStoneImageViewAtLocation(eatenLocation);
-        RelativeLayout eatenLayout = gameBoard.getLayoutatLocation(eatenLocation);
+        RelativeLayout eatenLayout = gameBoard.getLayoutAtLocation(eatenLocation);
 
 
         eatenLayout.requestLayout();
@@ -441,7 +441,6 @@ public class GameManager implements View.OnClickListener {
                 throw new RuntimeException("playAsComputer: didn't find any stone with valid moves");
             }
 
-            //now scan again to see if there are any stone with eating moves, if so than it would be the selected stone
             for (Stone current : allMoves.keySet()) {
                 validMoves = allMoves.get(current);
                 if (validMoves.iterator().next().getEatsLocation() != null) {
@@ -490,24 +489,18 @@ public class GameManager implements View.OnClickListener {
 
     //__________________________________________
     public void addHighScore(String name, int score) {
+        if (highScoreArray.size() >= 10) {
+            Collections.sort(highScoreArray, new Comparator<HighScore>() {
 
-
+                @Override
+                public int compare(HighScore high1, HighScore high2) {
+                    return (high1.getScore() - high2.getScore());
+                }
+            });
+            highScoreArray.remove(highScoreArray.size() - 1);
+        }
         highScoreArray.add(new HighScore(name, score));
-        Collections.sort(highScoreArray,new Comparator<HighScore>() {
-
-            @Override
-            public int compare(HighScore high1, HighScore high2) {
-                return (high1.getScore()-high2.getScore());
-            }
-        });
         DataManager.getInstance().saveData(highScoreArray, "high_scores");
-
-//        if (highScoreArray.size() >= 10) {
-//            Collections.sort(highScoreArray, Collections.reverseOrder());
-//            highScoreArray.remove(highScoreArray.size() - 1);
-//        }
-//
-//
     }
 
     //__________________________________________
@@ -534,7 +527,8 @@ public class GameManager implements View.OnClickListener {
             case USER:
                 addHighScore(playerUser.getName(), playerUser.getMovesCount());
                 Globals.highScoreTable = highScoreArray;
-                DataManager.getInstance().saveData(highScoreArray,"high_scores");
+                DataManager.getInstance().saveData(highScoreArray, "high_scores");
+
                 break;
             case COMPUTER:
                 break;
@@ -547,16 +541,16 @@ public class GameManager implements View.OnClickListener {
 
     private void makeKing(Stone stone) {
         int kingDrawable = 0;
-            if (stone.getStoneColor() == StoneColor.BLACK) {
-                kingDrawable = R.drawable.black_stone_king;
-            } else {
-                kingDrawable = R.drawable.white_stone_king;
-            }
+        if (stone.getStoneColor() == StoneColor.BLACK) {
+            kingDrawable = R.drawable.black_stone_king;
+        } else {
+            kingDrawable = R.drawable.white_stone_king;
+        }
 
-            RelativeLayout currentParent = gameBoard.getLayoutatLocation(stone.getLocation());
-            ImageView imageToMove = currentParent.findViewWithTag(gameBoard.STONE_TAG + ":" + stone.getLocation().toString());
-            imageToMove.setBackgroundResource(kingDrawable);
-            soundsManager.playKingSound();
+        RelativeLayout currentParent = gameBoard.getLayoutAtLocation(stone.getLocation());
+        ImageView imageToMove = currentParent.findViewWithTag(gameBoard.STONE_TAG + ":" + stone.getLocation().toString());
+        imageToMove.setBackgroundResource(kingDrawable);
+        soundsManager.playKingSound();
     }
     //__________________________________________
 }
