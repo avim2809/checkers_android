@@ -42,9 +42,6 @@ public class GameManager implements View.OnClickListener {
     private Location lastClickedLocation;
     protected ArrayList<Stone> lostStones = null;
     private boolean waiting_for_movement = false;
-    //private ArrayList<AnimationDrawable> animationDrawableArrayList;
-    //private ArrayList<ImageView> imageViewArrayList;
-    //private ImageView backgroundImg, backgroundGlowImg;
     private AnimationManager animationManager;
     private SoundsManager soundsManager;
     private ArrayList<ImageView> glowingCells;
@@ -243,14 +240,16 @@ public class GameManager implements View.OnClickListener {
             RelativeLayout grid_frame = gameBoard.getLayoutAtLocation(location);
             if (grid_frame != null) {
                 ImageView imageBG = grid_frame.findViewWithTag(gameBoard.BACKGROUND_TAG + ":" + location);
-
+                ImageView imageGlow=grid_frame.findViewWithTag(gameBoard.GLOW_TAG + ":" + location);
                 if (location.getEatsLocation() != null) {
                     //Log.i("eat loc", "markPossibleMovesOnBoard: ");
-                    ImageView imageGlow = grid_frame.findViewWithTag(gameBoard.GLOW_TAG + ":" + location);
+
                     //imageGlow.setVisibility(View.INVISIBLE);
 
                     imageGlow.startAnimation(animationManager.glowAnimation);
                     //invisibleCells.add(imageGlow);
+                }else{
+                    imageGlow.clearAnimation();
                 }
 
                 imageBG.startAnimation(animationManager.glowAnimation);

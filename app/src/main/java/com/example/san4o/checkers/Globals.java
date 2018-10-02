@@ -18,4 +18,5 @@ public final class Globals {
     public static StoneColor userStoneColor;
     public static StoneColor computerStoneColor;
     public static ArrayList<HighScore> highScoreTable;
+    public static boolean gameVolume = true;
 }

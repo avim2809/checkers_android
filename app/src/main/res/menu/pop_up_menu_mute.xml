@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/volume"
+        android:iconTintMode="screen"
+        android:icon="@drawable/ic_volume_off_black_24dp"
+        android:title="Mute"/>
+    <item android:id="@+id/new_game"
+        android:icon="@drawable/ic_autorenew_black_24dp"
+        android:title="new game" />
+
+</menu>

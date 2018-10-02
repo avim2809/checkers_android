@@ -27,37 +27,51 @@ public class SoundsManager {
 
     //__________________________________________________________
     public void playEatSound() {
-        soundPoool.play(eatSound, 1.0f, 1.0f, 1, 0, 1.0f);
+        if(Globals.gameVolume) {
+            soundPoool.play(eatSound, 1.0f, 1.0f, 1, 0, 1.0f);
+        }
     }
 
     //__________________________________________________________
     public void playEatenSound() {
-        soundPoool.play(eatenSound, 1.0f, 1.0f, 1, 0, 1.0f);
+        if(Globals.gameVolume) {
+            soundPoool.play(eatenSound, 1.0f, 1.0f, 1, 0, 1.0f);
+        }
     }
 
     //__________________________________________________________
     public void playWinSound() {
-        soundPoool.play(winSound, 1.0f, 1.0f, 1, 0, 1.0f);
+        if(Globals.gameVolume) {
+            soundPoool.play(winSound, 1.0f, 1.0f, 1, 0, 1.0f);
+        }
     }
 
     //__________________________________________________________
     public void playMoveSound() {
-        soundPoool.play(moveSound, 1.0f, 1.0f, 1, 0, 1.0f);
+        if(Globals.gameVolume) {
+            soundPoool.play(moveSound, 1.0f, 1.0f, 1, 0, 1.0f);
+        }
     }
 
     //__________________________________________________________
     public void playKingSound() {
-        soundPoool.play(kingSound, 1.0f, 1.0f, 1, 0, 1.0f);
+        if(Globals.gameVolume) {
+            soundPoool.play(kingSound, 1.0f, 1.0f, 1, 0, 1.0f);
+        }
     }
 
     //__________________________________________________________
     public void playWrongMoveSound() {
-        soundPoool.play(wrongMove, 1.0f, 1.0f, 1, 0, 1.0f);
+        if(Globals.gameVolume) {
+            soundPoool.play(wrongMove, 1.0f, 1.0f, 1, 0, 1.0f);
+        }
     }
 
     //__________________________________________________________
     public void playLossSound() {
-        soundPoool.play(lossSound, 1.0f, 1.0f, 1, 0, 1.0f);
+        if(Globals.gameVolume) {
+            soundPoool.play(lossSound, 1.0f, 1.0f, 1, 0, 1.0f);
+        }
     }
     //__________________________________________________________
 }

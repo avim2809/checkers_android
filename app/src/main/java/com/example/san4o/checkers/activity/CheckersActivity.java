@@ -1,22 +1,29 @@
 package com.example.san4o.checkers.activity;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ContextThemeWrapper;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
+import android.widget.Button;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.san4o.checkers.DataManager;
 import com.example.san4o.checkers.GameManager;
 import com.example.san4o.checkers.Globals;
 import com.example.san4o.checkers.R;
 
-public class CheckersActivity extends AppCompatActivity implements DialogInterface.OnClickListener {
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+public class CheckersActivity extends AppCompatActivity implements DialogInterface.OnClickListener,View.OnClickListener {
 
     private String userName;
     private GameManager gameManager;
@@ -31,6 +38,9 @@ public class CheckersActivity extends AppCompatActivity implements DialogInterfa
 
         setContentView(R.layout.activity_checkers);
         Globals.checkersActivity = this;
+
+        Button popUpMenuBtn = findViewById(R.id.pop_up_menu);
+        popUpMenuBtn.setOnClickListener(this);
         BlackScore = findViewById(R.id.black_score);
         WhiteScore = findViewById(R.id.white_score);
         if (getIntent().hasExtra("name")) {
@@ -78,5 +88,62 @@ public class CheckersActivity extends AppCompatActivity implements DialogInterfa
             Toast.makeText(this, "stay in game ", Toast.LENGTH_SHORT).show();
         }
     }
+
+    @SuppressLint("RestrictedApi")
+    @Override
+    public void onClick(View view) {
+        createPopUpMenu(view);
+    }
     //___________________________________________
+
+    private void createPopUpMenu(View view){
+        Context wrapper = new ContextThemeWrapper(this, R.style.MyPopupMenu);
+
+         PopupMenu popUpMenu = new PopupMenu(wrapper,view);
+        try {
+            Field[] fields = popUpMenu.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                if ("mPopup".equals(field.getName())) {
+                    field.setAccessible(true);
+                    Object menuPopupHelper = field.get(popUpMenu);
+                    Class<?> classPopupHelper = Class.forName(menuPopupHelper.getClass().getName());
+                    Method setForceIcons = classPopupHelper.getMethod("setForceShowIcon", boolean.class);
+                    setForceIcons.invoke(menuPopupHelper, true);
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if(Globals.gameVolume == true){
+            getMenuInflater().inflate(R.menu.pop_up_menu_mute,popUpMenu.getMenu());
+        }else{
+            getMenuInflater().inflate(R.menu.pop_up_menu_volume,popUpMenu.getMenu());
+        }
+
+        popUpMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.new_game:
+                        Intent refresh = new Intent(CheckersActivity.this, CheckersActivity.class);
+                        startActivity(refresh);
+                        finish();
+                        break;
+                    case R.id.volume:
+                        if(Globals.gameVolume == true){
+                            Globals.gameVolume=false;
+                        } else {
+                            Globals.gameVolume=true;
+                        }
+                        break;
+                }
+                return false;
+            }
+        });
+
+
+        popUpMenu.show();
+    }
 }
