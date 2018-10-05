@@ -2,7 +2,9 @@ package com.example.san4o.checkers;
 
 import android.util.Log;
 
-public class Location {
+import java.io.Serializable;
+
+public class Location implements Serializable {
 
     private int col;
     private int row;

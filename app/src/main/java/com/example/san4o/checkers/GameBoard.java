@@ -1,5 +1,6 @@
 package com.example.san4o.checkers;
 
+import android.provider.ContactsContract;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -23,7 +24,6 @@ public class GameBoard{
     public static int BOARD_SIZE=8;
     private Stone[][] stones;
     private HashMap<Location,RelativeLayout>locationViewHashMap=null;
-    //private HashMap<RelativeLayout,Location>View2locationHashMap=null;
     private ArrayList<Stone> activeStones=null;
     private GridLayout gameBoardGrid;
     public final String BACKGROUND_TAG = "image_bg";
@@ -32,7 +32,6 @@ public class GameBoard{
     public final String EAT_GLOW_TAG = "eat_glow";
     private int whiteDrawableCell = R.drawable.white_cell_small;
     private int blackDrawableCell = R.drawable.black_cell_small;
-    //private int whiteCellGlow = R.drawable.white_cell_glow;
     private int blackCellGlow = R.drawable.black_cell_glow;
     private int eatCellGlow = R.drawable.black_cell_small_eat_glow;
     private CheckersActivity context;
@@ -47,6 +46,7 @@ public class GameBoard{
         gameManager = gm;
         locationViewHashMap = new HashMap<>();
         initBoard();
+
     }
     //______________________________________
     public void initStonesFromData(Stone[][] stones){
@@ -76,31 +76,59 @@ public class GameBoard{
         stoneImage.setLayoutParams(params);
         currStoneToAdd = new Stone(color,currCellIndex,location);
         currStoneToAdd.setLocation(location);
-        currStoneToAdd.setRelativeLayout(frame);
+        //currStoneToAdd.setRelativeLayout(frame);
         addStone(currStoneToAdd);
         frame.addView(stoneImage);
     }
     //______________________________________
-    public void initComputerStones(StoneColor stoneColor){
+    public void initComputerStones(StoneColor stoneColor) {
         //int playerStoneDrawable = getDrawableStoneByColor(stoneColor);
         //Stone currStoneToAdd;
-
-        for(int i=0;i<3;i++){
-            for(int j=0;j<BOARD_SIZE;j++){
-                if((i+j)%2==1){
-                    createAndAddStone(i,j,StoneColor.BLACK);
+        Stone[][] stonesFromData = DataManager.getInstance().loadGameBoard();
+        StoneColor compColor = gameManager.getPlayerComputer().getColor();
+        if (stonesFromData != null) {
+            for (int i = 0; i < BOARD_SIZE; i++) {
+                for (int j = 0; j < BOARD_SIZE; j++) {
+                    if (stonesFromData[i][j] != null) {
+                        if (stonesFromData[i][j].getStoneColor() == compColor) {
+                            createAndAddStone(i, j, compColor);
+                        }
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < BOARD_SIZE; j++) {
+                    if ((i + j) % 2 == 1) {
+                        createAndAddStone(i, j, StoneColor.BLACK);
+                    }
                 }
             }
         }
     }
     //______________________________________
-    public void initUserStones(StoneColor stoneColor){
+    public void initUserStones(StoneColor stoneColor) {
         //int playerStoneDrawable = getDrawableStoneByColor(stoneColor);
 
-        for(int i=BOARD_SIZE-1;i>BOARD_SIZE-4;i--){
-            for(int j=BOARD_SIZE-1;j>=0;j--){
-                if((i+j)%2==1){
-                    createAndAddStone(i,j,StoneColor.WHITE);
+        Stone[][] stonesFromData = DataManager.getInstance().loadGameBoard();
+        StoneColor userColor = gameManager.getPlayerUser().getColor();
+        if (stonesFromData != null) {
+            for (int i = 0; i < BOARD_SIZE; i++) {
+                for (int j = 0; j < BOARD_SIZE; j++) {
+                    if(stonesFromData[i][j] != null) {
+                        if (stonesFromData[i][j].getStoneColor() == userColor) {
+                            createAndAddStone(i, j, userColor);
+                        }
+                    }
+                }
+            }
+        } else {
+
+            for (int i = BOARD_SIZE - 1; i > BOARD_SIZE - 4; i--) {
+                for (int j = BOARD_SIZE - 1; j >= 0; j--) {
+                    if ((i + j) % 2 == 1) {
+                        createAndAddStone(i, j, StoneColor.WHITE);
+                    }
                 }
             }
         }
@@ -117,13 +145,6 @@ public class GameBoard{
         return drawableToRet;
     }
 
-    //______________________________________
-//    public int getDrwableCellByColor(StoneColor stoneColor)
-//    {
-//        if (stoneColor == StoneColor.BLACK)
-//            return blackDrawableCell;
-//        return whiteDrawableCell;
-//    }
     //______________________________________
     private void initBoard(){
         stones = new Stone[BOARD_SIZE][BOARD_SIZE];

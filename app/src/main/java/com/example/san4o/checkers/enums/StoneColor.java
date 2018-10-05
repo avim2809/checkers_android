@@ -1,6 +1,8 @@
 package com.example.san4o.checkers.enums;
 
-public enum StoneColor {
+import java.io.Serializable;
+
+public enum StoneColor implements Serializable {
     WHITE,
     BLACK
 }

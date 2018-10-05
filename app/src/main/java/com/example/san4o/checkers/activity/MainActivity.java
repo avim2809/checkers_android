@@ -61,6 +61,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private void initData(){
         name = DataManager.getInstance().loadPlayerName();
+        Globals.gameVolume = DataManager.getInstance().loadVolume();
         if(!name.equals("")){
             nameEditText.setText(name.toString());
         }

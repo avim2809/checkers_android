@@ -5,11 +5,13 @@ import android.widget.RelativeLayout;
 
 import com.example.san4o.checkers.enums.StoneColor;
 
-public class Stone{
+import java.io.Serializable;
+
+public class Stone implements Serializable {
 
     private StoneColor stoneColor;
     private int gridIndex;
-    private RelativeLayout relativeLayout;
+    //private RelativeLayout relativeLayout;
     private boolean isKing;
     private Location location;
 
@@ -59,13 +61,13 @@ public class Stone{
         this.isKing = true;
     }
 
-    public RelativeLayout getRelativeLayout() {
+    /*public RelativeLayout getRelativeLayout() {
         return relativeLayout;
     }
 
     public void setRelativeLayout(RelativeLayout relativeLayout) {
         this.relativeLayout = relativeLayout;
-    }
+    }*/
 
     @Override
     public String toString() {

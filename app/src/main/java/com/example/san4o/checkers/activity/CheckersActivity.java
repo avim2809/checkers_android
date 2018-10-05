@@ -16,6 +16,8 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.san4o.checkers.DataManager;
+import com.example.san4o.checkers.GameBoard;
 import com.example.san4o.checkers.GameManager;
 import com.example.san4o.checkers.Globals;
 import com.example.san4o.checkers.R;
@@ -77,15 +79,13 @@ public class CheckersActivity extends AppCompatActivity implements DialogInterfa
     @Override
     public void onClick(DialogInterface dialogInterface, int i) {
         if (i == dialogInterface.BUTTON_POSITIVE) {
-            //DataManager.getInstance().saveData();
-            Toast.makeText(this, "yes to save", Toast.LENGTH_SHORT).show();
+            DataManager.getInstance().saveGameBoard(gameManager.getGameBoard().getBoard());
             finish();
-
         } else if (i == dialogInterface.BUTTON_NEGATIVE) {
-            Toast.makeText(this, "not to save", Toast.LENGTH_SHORT).show();
+            DataManager.getInstance().saveGameBoard(null);
             finish();
         } else if (i == dialogInterface.BUTTON_NEUTRAL) {
-            Toast.makeText(this, "stay in game ", Toast.LENGTH_SHORT).show();
+            return;
         }
     }
 
@@ -128,15 +128,17 @@ public class CheckersActivity extends AppCompatActivity implements DialogInterfa
                 switch (menuItem.getItemId()){
                     case R.id.new_game:
                         Intent refresh = new Intent(CheckersActivity.this, CheckersActivity.class);
+                        DataManager.getInstance().saveData(null,"game_board_data");
                         startActivity(refresh);
                         finish();
                         break;
                     case R.id.volume:
                         if(Globals.gameVolume == true){
-                            Globals.gameVolume=false;
+                            Globals.gameVolume = false;
                         } else {
-                            Globals.gameVolume=true;
+                            Globals.gameVolume = true;
                         }
+                        DataManager.getInstance().saveVolume(Globals.gameVolume);
                         break;
                 }
                 return false;

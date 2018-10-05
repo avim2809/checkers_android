@@ -26,15 +26,28 @@ public class DataManager implements Serializable {
         if (Instance == null) {
             Instance = new DataManager();
             gson = new Gson();
-
         }
         return Instance;
     }
 
     //________________________________________________________
     public void saveData(Object objectToSave, String dataName) {
+
+
+        //SharedPreferences appSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+        //SharedPreferences.Editor prefsEditor = appSharedPrefs.edit();
+
         String stringObjectToSave = gson.toJson(objectToSave);
         sharedPrefEditor.putString(dataName, stringObjectToSave);
+        if (!sharedPreferences.contains(("first_run"))) {
+            sharedPrefEditor.putBoolean("first_run", false);
+        }
+        sharedPrefEditor.commit();
+    }
+
+    public void saveGameBoard(Stone[][] stones){
+        String stringObjectToSave = gson.toJson(stones);
+        sharedPrefEditor.putString("game_board_data", stringObjectToSave);
         if (!sharedPreferences.contains(("first_run"))) {
             sharedPrefEditor.putBoolean("first_run", false);
         }
@@ -64,12 +77,6 @@ public class DataManager implements Serializable {
         return null;
     }
 
-    //_______________________________________________________
-    public int loadGameBoardSize() {
-        int gameBoardSize = Integer.parseInt(sharedPreferences.getString("game_board_size", ""));
-        return gameBoardSize;
-    }
-
     //________________________________________________________
     public String loadPlayerName() {
         String playerName = sharedPreferences.getString("player_name", "");
@@ -92,6 +99,24 @@ public class DataManager implements Serializable {
             return highScores;
         }
         return null;
+    }
+    //________________________________________________________
+
+    public boolean loadVolume(){
+        boolean volume = true;
+        if (sharedPreferences.contains("first_run")) {
+            volume = sharedPreferences.getBoolean("volume",true);
+        }
+        return volume;
+    }
+    //________________________________________________________
+
+    public void saveVolume(boolean volume){
+        sharedPrefEditor.putBoolean("volume", volume);
+        if (!sharedPreferences.contains(("first_run"))) {
+            sharedPrefEditor.putBoolean("first_run", false);
+        }
+        sharedPrefEditor.commit();
     }
     //________________________________________________________
 }

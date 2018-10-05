@@ -38,7 +38,7 @@ public class GameManager implements View.OnClickListener {
     private Player playerComputer;
     private StoneColor turn;
     private Stone last_clicked_stone = null;
-    private LinkedHashSet<Location> lastvalidMoves;
+    private LinkedHashSet<Location> lastValidMoves;
     private Location lastClickedLocation;
     protected ArrayList<Stone> lostStones = null;
     private boolean waiting_for_movement = false;
@@ -92,8 +92,6 @@ public class GameManager implements View.OnClickListener {
 
     //_____________________________________________
     public void initGame() {
-        //animationDrawableArrayList = new ArrayList<>();
-        //imageViewArrayList = new ArrayList<>();
         gameBoard = new GameBoard(this);
         turn = StoneColor.WHITE;
         playerUser = new Player();
@@ -115,14 +113,6 @@ public class GameManager implements View.OnClickListener {
     private void generateColor() {
         playerUser.setPlayerStoneColor(StoneColor.WHITE);
         playerComputer.setPlayerStoneColor(StoneColor.BLACK);
-    }
-
-    //_____________________________________________________________
-    public void saveData() {
-        DataManager.getInstance().saveData(playerUser.getName(), "player_name");
-        DataManager.getInstance().saveData(gameBoard.getBoard(), "game_board_data");
-        DataManager.getInstance().saveData(highScoreArray, "high_scores");
-        DataManager.getInstance().saveData(GameBoard.BOARD_SIZE, "game_board_size");
     }
 
     //_____________________________________________________________
@@ -156,27 +146,27 @@ public class GameManager implements View.OnClickListener {
                             // user clicked on same stone or different stone before actually moving
                             if (!clickedStone.equals(last_clicked_stone)) {
                                 //user clicked on different stone: clear previous marked and cells mark new cells
-                                if (lastvalidMoves != null) {
+                                if (lastValidMoves != null) {
                                     unmarkPossibleMovesOnBoard();
                                 }
                                 markPossibleMovesOnBoard(validMoves);
-                                lastvalidMoves = validMoves;
+                                lastValidMoves = validMoves;
                             }
                         } else {
                             //first time click
                             markPossibleMovesOnBoard(validMoves);
-                            lastvalidMoves = validMoves;
+                            lastValidMoves = validMoves;
                         }
                         if (!waiting_for_movement) {
                             waiting_for_movement = true;
                         }
                     } else {
                         //has no valid moves
-                        if (last_clicked_stone != null && lastvalidMoves != null) {
+                        if (last_clicked_stone != null && lastValidMoves != null) {
                             //clear previous marked cell
-//                        markPossibleMovesOnBoard(lastvalidMoves,true);
+//                        markPossibleMovesOnBoard(lastValidMoves,true);
                             unmarkPossibleMovesOnBoard();
-                            lastvalidMoves = null;
+                            lastValidMoves = null;
                         }
                         if (waiting_for_movement) {
                             waiting_for_movement = false;
@@ -194,8 +184,8 @@ public class GameManager implements View.OnClickListener {
                 } else {
                     if (waiting_for_movement) {
                         //player clicked on empty frame  and wants to move somewhere
-                        if (lastvalidMoves != null && last_clicked_stone != null) {
-                            if (!lastvalidMoves.contains(clickedLocation)) {
+                        if (lastValidMoves != null && last_clicked_stone != null) {
+                            if (!lastValidMoves.contains(clickedLocation)) {
                                 //invalid move attempt
                                 new StyleableToast
                                         .Builder(Globals.checkersActivity)
@@ -222,7 +212,7 @@ public class GameManager implements View.OnClickListener {
 
     private Location findClickedLocationInValidMoves(Location locationToFind) {
         Location locToRet = null;
-        Iterator<Location> it = lastvalidMoves.iterator();
+        Iterator<Location> it = lastValidMoves.iterator();
         while (it.hasNext()) {
             Location loc = it.next();
             if (loc.equals(locationToFind)) {
@@ -498,7 +488,9 @@ public class GameManager implements View.OnClickListener {
             });
             highScoreArray.remove(highScoreArray.size() - 1);
         }
-        highScoreArray.add(new HighScore(name, score));
+        HighScore currHighScore = new HighScore(name, score);
+        Globals.currHighScore = currHighScore;
+        highScoreArray.add(currHighScore);
         DataManager.getInstance().saveData(highScoreArray, "high_scores");
     }
 
