@@ -36,4 +36,8 @@ public class HighScore {
         String uniqueID = UUID.randomUUID().toString();
         return uniqueID;
     }
+
+    public String getID(){
+        return this.id;
+    }
 }

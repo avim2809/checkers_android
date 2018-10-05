@@ -90,9 +90,6 @@
                 android:shadowColor="#000000"
                 android:text="@string/rule6"
                 android:textSize="16sp" />
-
-
-
         </LinearLayout>
     </ScrollView>
 

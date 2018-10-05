@@ -78,14 +78,23 @@ public class HighScoreActivity extends AppCompatActivity implements View.OnClick
             TableRow currentTableRow;
             TextView currentName;
             TextView currentScore;
+            HighScore currHighScore;
             for (int i = 0; i < highScores.size(); i++) {
                 currentTableRow = new TableRow(this);
+                currHighScore = highScores.get(i);
 
-                currentName = createTextView(highScores.get(i).getName());
+                currentName = createTextView(currHighScore.getName());
                 currentName.setTextColor(R.color.colorPrimaryDark);
 
-                currentScore = createTextView(String.valueOf(highScores.get(i).getScore()));
+                currentScore = createTextView(String.valueOf(currHighScore.getScore()));
                 currentScore.setTextColor(R.color.colorPrimaryDark);
+
+                if(currHighScore.getID() != null){
+                    if(currHighScore.getID().equals(currHighScore.getID())){
+                        currentName.setTextSize(20);
+                        currentScore.setTextSize(20);
+                    }
+                }
 
                 currentTableRow.addView(currentName);
                 currentTableRow.addView(currentScore);
@@ -94,6 +103,7 @@ public class HighScoreActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+    //_________________________________________________
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
