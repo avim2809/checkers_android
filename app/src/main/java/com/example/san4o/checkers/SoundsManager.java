@@ -1,7 +1,9 @@
 package com.example.san4o.checkers;
 
+import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.Build;
 
 public class SoundsManager {
     private static SoundPool soundPoool;
@@ -14,7 +16,14 @@ public class SoundsManager {
     private static int lossSound;
 
     public SoundsManager() {
-        soundPoool = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
+        if (Build.VERSION.SDK_INT <21)
+            soundPoool = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
+        else
+        {
+            AudioAttributes attributes = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build();
+            soundPoool = new SoundPool.Builder().setMaxStreams(2).setAudioAttributes(attributes).build();
+
+        }
 
         eatSound = soundPoool.load(Globals.checkersActivity, R.raw.eat_sound, 1);
         eatenSound = soundPoool.load(Globals.checkersActivity, R.raw.eaten_sound, 1);
