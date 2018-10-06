@@ -11,6 +11,7 @@ public class AnimationManager {
     public  Animation disappearAnimation;
     public  Animation appearAnimation ;
     public  Animation eatAnimation ;
+    public Animation jumpAnimation;
 
     public AnimationManager(){
 
@@ -18,63 +19,7 @@ public class AnimationManager {
         disappearAnimation=  AnimationUtils.loadAnimation(Globals.checkersActivity,R.anim.disappear_anim);
         appearAnimation= AnimationUtils.loadAnimation(Globals.checkersActivity,R.anim.appear_anim);
         eatAnimation = AnimationUtils.loadAnimation(Globals.checkersActivity,R.anim.eat_anim);
-
-//        glowAnimation.setAnimationListener(new Animation.AnimationListener() {
-//            @Override
-//            public void onAnimationStart(Animation animation) { }
-//
-//            @Override
-//            public void onAnimationEnd(Animation animation) {
-//                animation.cancel();
-//
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animation animation) { }
-//        });
-
-//        disappearAnimation.setAnimationListener(new Animation.AnimationListener() {
-//            @Override
-//            public void onAnimationStart(Animation animation) { }
-//
-//            @Override
-//            public void onAnimationEnd(Animation animation) {
-//                animation.cancel();
-//                SystemClock.sleep(1000);
-//
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animation animation) { }
-//        });
-//
-//        appearAnimation.setAnimationListener(new Animation.AnimationListener() {
-//            @Override
-//            public void onAnimationStart(Animation animation) { }
-//
-//            @Override
-//            public void onAnimationEnd(Animation animation) {
-//                animation.cancel();
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animation animation) { }
-//        });
-//
-//        eatAnimation.setAnimationListener(new Animation.AnimationListener() {
-//            @Override
-//            public void onAnimationStart(Animation animation) { }
-//
-//            @Override
-//            public void onAnimationEnd(Animation animation) {
-//                animation.cancel();
-//                SystemClock.sleep(1000);
-//                Log.i("eat anim", "onAnimationEnd: ");
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animation animation) { }
-//        });
+        jumpAnimation = AnimationUtils.loadAnimation(Globals.checkersActivity,R.anim.jump_anim);
     }
     //___________________________________________________
 }

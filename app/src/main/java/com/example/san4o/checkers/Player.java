@@ -19,6 +19,10 @@ public class Player {
         this.movesCount++;
     }
 
+    public void setMoves(int moves){
+        this.movesCount = moves;
+    }
+
     public PlayerRole getRole() {
         return role;
     }
@@ -79,5 +83,6 @@ public class Player {
     public void setStonesNum(int stonesNum) {
         this.stonesNum = stonesNum;
     }
+
     //_____________________________________________
 }

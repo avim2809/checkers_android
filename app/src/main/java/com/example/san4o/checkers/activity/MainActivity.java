@@ -2,14 +2,12 @@ package com.example.san4o.checkers.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
 import android.view.animation.BounceInterpolator;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,8 +37,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
         Globals.mainActivity = this;
         DataManager.getInstance().initSharedPreferences(this.getApplicationContext());
-
-
         nameEditText = findViewById(R.id.name);
 
         initData();
@@ -50,27 +46,30 @@ public class MainActivity extends Activity implements View.OnClickListener {
         highScore.setOnClickListener(this);
         about.setOnClickListener(this);
 
-
-        new StyleableToast
-                .Builder(Globals.mainActivity)
-                .text("Welcome " + nameEditText.getText().toString() + "!")
-                .textColor(android.graphics.Color.WHITE)
-                .backgroundColor(android.graphics.Color.BLUE)
-                .show();
+        if (!name.equals("")) {
+            new StyleableToast
+                    .Builder(Globals.mainActivity)
+                    .text("Welcome back " + nameEditText.getText().toString() + "!")
+                    .textColor(android.graphics.Color.WHITE)
+                    .backgroundColor(Color.rgb(216, 180, 141))
+                    .show();
+        }
     }
 
-    private void initData(){
+    //_______________________________________________
+    private void initData() {
         name = DataManager.getInstance().loadPlayerName();
         Globals.gameVolume = DataManager.getInstance().loadVolume();
-        if(!name.equals("")){
+        if (!name.equals("")) {
             nameEditText.setText(name.toString());
         }
 
         ArrayList<HighScore> highScoreArrayList = DataManager.getInstance().loadHighScores();
-        if(highScoreArrayList != null){
+        if (highScoreArrayList != null) {
             Globals.highScoreTable = highScoreArrayList;
         }
     }
+
     //_______________________________________________
     private void makeEntrance() {
         int[] location = new int[2];
@@ -94,6 +93,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         about.getLocationInWindow(location);
         startAnim(about, location.clone(), 700);
     }
+
     //_______________________________________________
     private void startAnim(View view, int[] location, int delay) {
 
@@ -109,6 +109,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
         }, delay);
     }
+
     //_______________________________________________
     @Override
     public void onClick(View view) {
@@ -128,16 +129,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
         Intent rulesIntent = new Intent(this, RulesActivity.class);
         startActivity(rulesIntent);
     }
+
     //_______________________________________________
-    private void clickOnHighScore(){
-        Intent highScoreIntent = new Intent(this,HighScoreActivity.class);
+    private void clickOnHighScore() {
+        Intent highScoreIntent = new Intent(this, HighScoreActivity.class);
         startActivity(highScoreIntent);
     }
+
     //_______________________________________________
     private void clickOnAbout() {
-        Intent aboutIntent = new Intent(this, AboutAvtivity.class);
+        Intent aboutIntent = new Intent(this, AboutActivity.class);
         startActivity(aboutIntent);
     }
+
     //_______________________________________________
     private void clickOnStart() {
         String userName = nameEditText.getText().toString();

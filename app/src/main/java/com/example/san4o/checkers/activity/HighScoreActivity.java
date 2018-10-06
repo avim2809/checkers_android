@@ -1,6 +1,8 @@
 package com.example.san4o.checkers.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.arch.lifecycle.GenericLifecycleObserver;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Typeface;
@@ -17,16 +19,18 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.san4o.checkers.ConfettiManager;
 import com.example.san4o.checkers.Globals;
 import com.example.san4o.checkers.HighScore;
 import com.example.san4o.checkers.R;
+import com.example.san4o.checkers.StyledTextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
 public class HighScoreActivity extends AppCompatActivity implements View.OnClickListener {
-
+    private ConfettiManager confetti;
     private TableLayout highScoresTableLayout;
 
     @Override
@@ -36,12 +40,18 @@ public class HighScoreActivity extends AppCompatActivity implements View.OnClick
         ab.setDisplayShowHomeEnabled(true);
         ab.setIcon(R.drawable.icon_mini);
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_high_score);
         Globals.highScoreActivity = this;
-
         highScoresTableLayout = findViewById(R.id.high_scores_table);
         Button backBtn = findViewById(R.id.back);
         backBtn.setOnClickListener(this);
+
+        confetti = new ConfettiManager();
+
+        if (Globals.currHighScore != null) {
+            confetti.startConfetti();
+        }
 
         initHighScoresTable();
     }
@@ -76,24 +86,33 @@ public class HighScoreActivity extends AppCompatActivity implements View.OnClick
             highScoresTableLayout.addView(firstTableRow);
 
             TableRow currentTableRow;
-            TextView currentName;
-            TextView currentScore;
+            TextView currentName = null;
+            TextView currentScore = null;
             HighScore currHighScore;
             for (int i = 0; i < highScores.size(); i++) {
                 currentTableRow = new TableRow(this);
                 currHighScore = highScores.get(i);
 
-                currentName = createTextView(currHighScore.getName());
-                currentName.setTextColor(R.color.colorPrimaryDark);
-
-                currentScore = createTextView(String.valueOf(currHighScore.getScore()));
-                currentScore.setTextColor(R.color.colorPrimaryDark);
-
-                if(currHighScore.getID() != null){
-                    if(currHighScore.getID().equals(currHighScore.getID())){
-                        currentName.setTextSize(20);
-                        currentScore.setTextSize(20);
+                if (currHighScore.getID() != null) {
+                    if (Globals.currHighScore != null) {
+                        if (currHighScore.getID().equals(Globals.currHighScore.getID())) {
+                            currentName = createStyledTextView(currHighScore.getName());
+                            currentScore = createStyledTextView(String.valueOf(currHighScore.getScore()));
+                        } else {
+                            currentName = createTextView(currHighScore.getName());
+                            currentScore = createTextView(String.valueOf(currHighScore.getScore()));
+                        }
+                    } else {
+                        currentName = createTextView(currHighScore.getName());
+                        currentScore = createTextView(String.valueOf(currHighScore.getScore()));
                     }
+                } else {
+                    currentName = createTextView(currHighScore.getName());
+                    currentScore = createTextView(String.valueOf(currHighScore.getScore()));
+                }
+                if (currentName != null && currentScore != null) {
+                    currentName.setTextColor(R.color.colorPrimaryDark);
+                    currentScore.setTextColor(R.color.colorPrimaryDark);
                 }
 
                 currentTableRow.addView(currentName);
@@ -112,6 +131,18 @@ public class HighScoreActivity extends AppCompatActivity implements View.OnClick
     //_________________________________________________
     private TextView createTextView(String text) {
         TextView textToRet = new TextView(this);
+        textToRet.setGravity(Gravity.CENTER);
+        textToRet.setTypeface(textToRet.getTypeface(), Typeface.BOLD);
+        textToRet.setPadding
+                (2, 2, 2, 2);
+        textToRet.setTextSize(16);
+        textToRet.setText(text);
+
+        return textToRet;
+    }
+
+    private StyledTextView createStyledTextView(String text) {
+        StyledTextView textToRet = new StyledTextView(this, null);
         textToRet.setGravity(Gravity.CENTER);
         textToRet.setTypeface(textToRet.getTypeface(), Typeface.BOLD);
         textToRet.setPadding(2, 2, 2, 2);
@@ -171,4 +202,14 @@ public class HighScoreActivity extends AppCompatActivity implements View.OnClick
         }
     }
     //_________________________________________________
+
+    private static class ConfettiSample {
+        final int nameResId;
+        final Class<? extends Activity> targetActivityClass;
+
+        private ConfettiSample(int nameResId, Class<? extends Activity> targetActivityClass) {
+            this.nameResId = nameResId;
+            this.targetActivityClass = targetActivityClass;
+        }
+    }
 }

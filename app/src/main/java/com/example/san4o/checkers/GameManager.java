@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -32,7 +31,7 @@ import java.util.Set;
 public class GameManager implements View.OnClickListener {
     public final int INIT_STONES_NUM = 12;
     private final Handler handler;
-    private ArrayList highScoreArray;
+    private ArrayList<HighScore> highScoreArray;
     private GameBoard gameBoard;
     private Player playerUser;
     private Player playerComputer;
@@ -53,7 +52,10 @@ public class GameManager implements View.OnClickListener {
         invisibleCells = new ArrayList<>();
         animationManager = new AnimationManager();
 
-        soundsManager = new SoundsManager();
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            soundsManager = new SoundsManager();
+        }
         handler = new Handler();
 
         if (Globals.highScoreTable == null) {
@@ -79,11 +81,6 @@ public class GameManager implements View.OnClickListener {
     }
 
     //_____________________________________________
-    public void setTurn(StoneColor turn) {
-        this.turn = turn;
-    }
-
-    //_____________________________________________
     public Player getPlayerWithTurn() {
         if (playerUser.getColor() == turn)
             return playerUser;
@@ -100,13 +97,8 @@ public class GameManager implements View.OnClickListener {
         gameBoard.initComputerStones(playerComputer.getColor());
         gameBoard.initUserStones(playerUser.getColor());
         playerComputer.setRole(PlayerRole.COMPUTER);
-        playerComputer.setStonesNum(INIT_STONES_NUM);
         playerUser.setRole(PlayerRole.USER);
-        playerUser.setStonesNum(INIT_STONES_NUM);
-        //backgroundImg = new ImageView(Globals.checkersActivity);
-        //backgroundImg.setImageResource(gameBoard.getDrwableCellByColor(StoneColor.BLACK));
-        //backgroundGlowImg = new ImageView(Globals.checkersActivity);
-        //backgroundGlowImg.setImageResource(gameBoard.getDrawableCellGlowCellByColor(StoneColor.BLACK));
+        Globals.checkersActivity.initScores();
     }
 
     //___________________________________________-
@@ -118,11 +110,6 @@ public class GameManager implements View.OnClickListener {
     //_____________________________________________________________
     public GameBoard getGameBoard() {
         return gameBoard;
-    }
-
-    //_____________________________________________________________
-    public void setGameBoard(GameBoard gameBoard) {
-        this.gameBoard = gameBoard;
     }
 
     //_____________________________________________________________
@@ -163,8 +150,6 @@ public class GameManager implements View.OnClickListener {
                     } else {
                         //has no valid moves
                         if (last_clicked_stone != null && lastValidMoves != null) {
-                            //clear previous marked cell
-//                        markPossibleMovesOnBoard(lastValidMoves,true);
                             unmarkPossibleMovesOnBoard();
                             lastValidMoves = null;
                         }
@@ -175,7 +160,8 @@ public class GameManager implements View.OnClickListener {
                                 .Builder(Globals.checkersActivity)
                                 .text(Globals.checkersActivity.getResources().getString(R.string.no_moves))
                                 .textColor(android.graphics.Color.WHITE)
-                                .backgroundColor(Color.MAGENTA)
+                                .textBold()
+                                .backgroundColor(Color.rgb(216, 180, 141))
                                 .length(Toast.LENGTH_SHORT)
                                 .show();
 
@@ -191,7 +177,7 @@ public class GameManager implements View.OnClickListener {
                                         .Builder(Globals.checkersActivity)
                                         .text(Globals.checkersActivity.getResources().getString(R.string.invalid_move))
                                         .textColor(android.graphics.Color.WHITE)
-                                        .backgroundColor(android.graphics.Color.MAGENTA)
+                                        .backgroundColor(Color.rgb(216, 180, 141))
                                         .length(Toast.LENGTH_SHORT)
                                         .show();
                                 soundsManager.playWrongMoveSound();
@@ -210,6 +196,7 @@ public class GameManager implements View.OnClickListener {
         }
     }
 
+    //_____________________________________________________________
     private Location findClickedLocationInValidMoves(Location locationToFind) {
         Location locToRet = null;
         Iterator<Location> it = lastValidMoves.iterator();
@@ -230,16 +217,13 @@ public class GameManager implements View.OnClickListener {
             RelativeLayout grid_frame = gameBoard.getLayoutAtLocation(location);
             if (grid_frame != null) {
                 ImageView imageBG = grid_frame.findViewWithTag(gameBoard.BACKGROUND_TAG + ":" + location);
-                ImageView imageGlow=grid_frame.findViewWithTag(gameBoard.GLOW_TAG + ":" + location);
+                ImageView imageGlow = grid_frame.findViewWithTag(gameBoard.GLOW_TAG + ":" + location);
                 if (location.getEatsLocation() != null) {
-                    //Log.i("eat loc", "markPossibleMovesOnBoard: ");
-
-                    //imageGlow.setVisibility(View.INVISIBLE);
-
-                    imageGlow.startAnimation(animationManager.glowAnimation);
-                    //invisibleCells.add(imageGlow);
-                }else{
-                    imageGlow.clearAnimation();
+                    //imageGlow.startAnimation(animationManager.glowAnimation);
+                    imageGlow.setVisibility(View.INVISIBLE);
+                } else {
+                    //imageGlow.clearAnimation();
+                    imageGlow.setVisibility(View.VISIBLE);
                 }
 
                 imageBG.startAnimation(animationManager.glowAnimation);
@@ -289,9 +273,10 @@ public class GameManager implements View.OnClickListener {
 
         if (newParent == null) throw new AssertionError();
 
-        ImageView imageToMove = currentParent.findViewWithTag(gameBoard.STONE_TAG + ":" + last_clicked_stone.getLocation().toString());
-        soundsManager.playMoveSound();
+
+        soundsManager.playMoveSound();       //ImageView imageToMove = currentParent.findViewWithTag(gameBoard.STONE_TAG + ":" + last_clicked_stone.getLocation().toString());
         currentParent.removeView(currImageView);
+
         newParent.addView(currImageView);
         newParent.requestLayout();
         unmarkPossibleMovesOnBoard();
@@ -350,23 +335,13 @@ public class GameManager implements View.OnClickListener {
         }
 
         eatenImageViewStone.startAnimation(animationManager.eatAnimation);
-        animationManager.eatAnimation.setFillAfter(true);
-        animationManager.eatAnimation.setAnimationListener(new Animation.AnimationListener() {
+        handler.postDelayed(new Runnable() {
             @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                animationManager.eatAnimation.setFillAfter(false);
+            public void run() {
                 eatenImageViewStone.clearAnimation();
                 eatenLayout.removeView(eatenImageViewStone);
             }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-        });
+        }, 1000);
 
         eat_turn = false;
         //switch Turn and update score
@@ -375,6 +350,8 @@ public class GameManager implements View.OnClickListener {
                 turn = playerComputer.getColor();
                 playerComputer.setStonesNum(playerComputer.getStonesNum() - 1);
                 Globals.checkersActivity.BlackScore.setText(playerComputer.getStonesNum() + "");
+                Globals.checkersActivity.BlackImg.startAnimation(animationManager.jumpAnimation);
+                //Globals.checkersActivity.BlackImg.startAnimation(animationManager.jumpAnimation);
                 if (playerComputer.getStonesNum() == 0) {
                     OnVictory(PlayerRole.USER);
                     soundsManager.playWinSound();
@@ -392,6 +369,7 @@ public class GameManager implements View.OnClickListener {
             case COMPUTER:
                 playerUser.setStonesNum(playerUser.getStonesNum() - 1);
                 Globals.checkersActivity.WhiteScore.setText(playerUser.getStonesNum() + "");
+                Globals.checkersActivity.WhiteImg.startAnimation(animationManager.jumpAnimation);
                 if (playerUser.getStonesNum() == 0) {
                     OnVictory(PlayerRole.COMPUTER);
                     soundsManager.playLossSound();
@@ -486,12 +464,23 @@ public class GameManager implements View.OnClickListener {
                     return (high1.getScore() - high2.getScore());
                 }
             });
-            highScoreArray.remove(highScoreArray.size() - 1);
+
+            HighScore lastHighScore = highScoreArray.get(highScoreArray.size() - 1);
+            Log.i("new high score", String.valueOf(score));
+            if (lastHighScore.getScore() >= score) {
+                highScoreArray.remove(highScoreArray.size() - 1);
+                HighScore currHighScore = new HighScore(name, score);
+                Globals.currHighScore = currHighScore;
+                highScoreArray.add(currHighScore);
+                DataManager.getInstance().saveData(highScoreArray, "high_scores");
+
+            }
+        } else {
+            HighScore currHighScore = new HighScore(name, score);
+            Globals.currHighScore = currHighScore;
+            highScoreArray.add(currHighScore);
+            DataManager.getInstance().saveData(highScoreArray, "high_scores");
         }
-        HighScore currHighScore = new HighScore(name, score);
-        Globals.currHighScore = currHighScore;
-        highScoreArray.add(currHighScore);
-        DataManager.getInstance().saveData(highScoreArray, "high_scores");
     }
 
     //__________________________________________
@@ -527,6 +516,7 @@ public class GameManager implements View.OnClickListener {
 
         Intent highScoresActivity = new Intent(Globals.checkersActivity, HighScoreActivity.class);
         Globals.checkersActivity.startActivity(highScoresActivity);
+        Globals.checkersActivity.finish();
     }
     //__________________________________________
 

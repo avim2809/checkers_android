@@ -6,12 +6,9 @@
     <string name="high_score">טבלת שיאים</string>
     <string name="start">התחל משחק</string>
     <string name="rules">הוראות</string>
-    <string name="save">שמור</string>
     <string name="new_game">משחק חדש</string>
     <string name="share">שתף</string>
     <string name="back">חזור</string>
-    <string name="black">שחור</string>
-    <string name="white">לבן</string>
     <string name="no_moves">אין אפשרויות תזוזה</string>
     <string name="invalid_move">אנא בחר רק במיקומים המודגשים!</string>
     <string name="rule1">בתחילת המשחק, האבנים מונחות על המשבצות השחורות של הלוח. ההתקדמות היא רק על משבצות אלה, רק קדימה, למעט כש\"אוכלים\", ורק באלכסון. אבני השחקן האחד מונחות בשלוש (ארבע, בגרסה הגדולה) השורות הראשונות של הלוח, ואילו אבני השחקן השני מונחות באותו אופן בצד שלו. לפי המקובל, השחור מבצע את המהלך הראשון, והלבן משיב עליו. שתי הפעולות גם יחד נחשבות כמסע אחד.</string>
@@ -22,4 +19,9 @@
     <string name="rule3">כאשר אבן משחק מגיעה לשורה האחרונה (כלומר, הראשונה של היריב), היא הופכת להיות \"מלכה\". מלכה מסומנת על ידי אבן משחק וציור של מלך עליה, המונחות אחת על השנייה. בניגוד לאבן רגילה, מלכה יכולה לנוע לכל הכיוונים, כלומר גם אחורה (באלכסון בלבד) וללא הגבלה על כמות המשבצות בדרך.</string>
     <string name="Moves">צעדים</string>
     <string name="created">האפליקציה נעשתה על ידי ליליה סטיאגליוק ואבי מילנר</string>
+    <string name="save">האם ברצונך לשמור את המשחק?</string>
+    <string name="confirm">אשר יציאה</string>
+    <string name="yes">כן</string>
+    <string name="no">לא</string>
+    <string name="stay_in">אני רוצה להישאר</string>
 </resources>

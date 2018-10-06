@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.RulesActivity" />NoTitleBar
-        <activity android:name=".activity.AboutAvtivity" />
+        <activity android:name=".activity.AboutActivity" />
         <activity
             android:name=".activity.HighScoreActivity"
             android:screenOrientation="portrait"/>

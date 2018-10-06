@@ -33,10 +33,6 @@ public class DataManager implements Serializable {
     //________________________________________________________
     public void saveData(Object objectToSave, String dataName) {
 
-
-        //SharedPreferences appSharedPrefs = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
-        //SharedPreferences.Editor prefsEditor = appSharedPrefs.edit();
-
         String stringObjectToSave = gson.toJson(objectToSave);
         sharedPrefEditor.putString(dataName, stringObjectToSave);
         if (!sharedPreferences.contains(("first_run"))) {
@@ -44,7 +40,7 @@ public class DataManager implements Serializable {
         }
         sharedPrefEditor.commit();
     }
-
+    //________________________________________________________
     public void saveGameBoard(Stone[][] stones){
         String stringObjectToSave = gson.toJson(stones);
         sharedPrefEditor.putString("game_board_data", stringObjectToSave);
@@ -61,6 +57,11 @@ public class DataManager implements Serializable {
             sharedPrefEditor.putBoolean("first_run", false);
         }
         sharedPrefEditor.commit();
+    }
+    //________________________________________________________
+    public int loadUserMovesCount(){
+        int moves = sharedPreferences.getInt("moves", 0);
+        return moves;
     }
 
     //________________________________________________________
