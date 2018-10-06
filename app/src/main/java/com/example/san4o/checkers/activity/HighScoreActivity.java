@@ -2,13 +2,12 @@ package com.example.san4o.checkers.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.arch.lifecycle.GenericLifecycleObserver;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +23,8 @@ import com.example.san4o.checkers.Globals;
 import com.example.san4o.checkers.HighScore;
 import com.example.san4o.checkers.R;
 import com.example.san4o.checkers.StyledTextView;
+
+import org.sk.PrettyTable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -189,11 +190,13 @@ public class HighScoreActivity extends AppCompatActivity implements View.OnClick
     //_________________________________________________
     private void shareHighScores() {
         String message = "Check out the high score table: \n";
+        PrettyTable table = new PrettyTable("Name","Score");
         ArrayList<HighScore> highScoreArrayList = Globals.highScoreTable;
         if (highScoreArrayList != null && highScoreArrayList.size() > 0) {
             for (int i = 0; i < highScoreArrayList.size(); i++) {
-                message.concat(highScoreArrayList.get(i).getName() + " " + highScoreArrayList.get(i).getScore() + "\n");
+                table.addRow(highScoreArrayList.get(i).getName(),highScoreArrayList.get(i).getScore()+"");
             }
+            message+= table.toString();
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT, message);
