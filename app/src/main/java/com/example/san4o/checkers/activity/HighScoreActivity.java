@@ -157,8 +157,7 @@ public class HighScoreActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.back) {
-            Intent mainIntent = new Intent(this, MainActivity.class);
-            startActivity(mainIntent);
+            finish();
         }
     }
 
