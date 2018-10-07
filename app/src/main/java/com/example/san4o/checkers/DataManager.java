@@ -63,6 +63,14 @@ public class DataManager implements Serializable {
         int moves = sharedPreferences.getInt("moves", 0);
         return moves;
     }
+    //________________________________________________________
+    public void saveMovesCount(int moves){
+        sharedPrefEditor.putInt("moves", moves);
+        if (!sharedPreferences.contains(("first_run"))) {
+            sharedPrefEditor.putBoolean("first_run", false);
+        }
+        sharedPrefEditor.commit();
+    }
 
     //________________________________________________________
     public Stone[][] loadGameBoard() {

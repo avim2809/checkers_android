@@ -87,7 +87,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         highScore.getLocationInWindow(location);
         startAnim(highScore, location.clone(), 300);
 
-
         startAnim(rules, location.clone(), 500);
 
         about.getLocationInWindow(location);

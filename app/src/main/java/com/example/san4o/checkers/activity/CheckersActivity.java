@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.example.san4o.checkers.AnimationManager;
 import com.example.san4o.checkers.DataManager;
 import com.example.san4o.checkers.GameManager;
 import com.example.san4o.checkers.Globals;
@@ -89,10 +87,11 @@ public class CheckersActivity extends AppCompatActivity implements DialogInterfa
     public void onClick(DialogInterface dialogInterface, int i) {
         if (i == dialogInterface.BUTTON_POSITIVE) {
             DataManager.getInstance().saveGameBoard(gameManager.getGameBoard().getBoard());
-            DataManager.getInstance().saveData(gameManager.getPlayerUser().getMovesCount(),"score");
+            DataManager.getInstance().saveMovesCount(gameManager.getPlayerUser().getMovesCount());
             finish();
         } else if (i == dialogInterface.BUTTON_NEGATIVE) {
             DataManager.getInstance().saveGameBoard(null);
+            DataManager.getInstance().saveMovesCount(0);
             finish();
         } else if (i == dialogInterface.BUTTON_NEUTRAL) {
             return;

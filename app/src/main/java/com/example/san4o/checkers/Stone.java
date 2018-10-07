@@ -11,7 +11,6 @@ public class Stone implements Serializable {
 
     private StoneColor stoneColor;
     private int gridIndex;
-    //private RelativeLayout relativeLayout;
     private boolean isKing;
     private Location location;
 
@@ -51,7 +50,6 @@ public class Stone implements Serializable {
         return this.stoneColor;
     }
 
-
     public boolean isKing() {
         return isKing;
     }
@@ -61,13 +59,6 @@ public class Stone implements Serializable {
         this.isKing = true;
     }
 
-    /*public RelativeLayout getRelativeLayout() {
-        return relativeLayout;
-    }
-
-    public void setRelativeLayout(RelativeLayout relativeLayout) {
-        this.relativeLayout = relativeLayout;
-    }*/
 
     @Override
     public String toString() {

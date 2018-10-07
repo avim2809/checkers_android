@@ -46,13 +46,15 @@ public class GameBoard {
         gameManager = gm;
         locationViewHashMap = new HashMap<>();
         initBoard();
-
     }
 
     //______________________________________
-    private void createAndAddStone(int i, int j, StoneColor color) {
+    private void createAndAddStone(int i, int j, StoneColor color,boolean isKing) {
         Stone currStoneToAdd;
         int playerStoneDrawable = getDrawableStoneByColor(color);
+        if(isKing){
+            playerStoneDrawable = getDrawableKingStoneByColor(color);
+        }
         int currCellIndex = (gameBoardGrid.getColumnCount() * i) + j;
         RelativeLayout frame = (RelativeLayout) gameBoardGrid.getChildAt(currCellIndex);
         Location location = new Location(j, i);
@@ -64,6 +66,9 @@ public class GameBoard {
         params.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
         stoneImage.setLayoutParams(params);
         currStoneToAdd = new Stone(color, currCellIndex, location);
+        if(isKing){
+            currStoneToAdd.makeKing();
+        }
         currStoneToAdd.setLocation(location);
         addStone(currStoneToAdd);
         frame.addView(stoneImage);
@@ -79,7 +84,12 @@ public class GameBoard {
                 for (int j = 0; j < BOARD_SIZE; j++) {
                     if (stonesFromData[i][j] != null) {
                         if (stonesFromData[i][j].getStoneColor() == compColor) {
-                            createAndAddStone(i, j, compColor);
+                            if(stonesFromData[i][j].isKing()){
+                                createAndAddStone(i, j, compColor,true);
+                            }else{
+                                createAndAddStone(i, j, compColor,false);
+                            }
+
                             stonesCount++;
                         }
                     }
@@ -89,7 +99,7 @@ public class GameBoard {
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < BOARD_SIZE; j++) {
                     if ((i + j) % 2 == 1) {
-                        createAndAddStone(i, j, StoneColor.BLACK);
+                        createAndAddStone(i, j, StoneColor.BLACK,false);
                         stonesCount++;
                     }
                 }
@@ -114,7 +124,11 @@ public class GameBoard {
                 for (int j = 0; j < BOARD_SIZE; j++) {
                     if (stonesFromData[i][j] != null) {
                         if (stonesFromData[i][j].getStoneColor() == userColor) {
-                            createAndAddStone(i, j, userColor);
+                            if(stonesFromData[i][j].isKing()){
+                                createAndAddStone(i, j, userColor,true);
+                            }else {
+                                createAndAddStone(i, j, userColor,false);
+                            }
                             stonesCount++;
                         }
                     }
@@ -125,7 +139,7 @@ public class GameBoard {
             for (int i = BOARD_SIZE - 1; i > BOARD_SIZE - 4; i--) {
                 for (int j = BOARD_SIZE - 1; j >= 0; j--) {
                     if ((i + j) % 2 == 1) {
-                        createAndAddStone(i, j, StoneColor.WHITE);
+                        createAndAddStone(i, j, StoneColor.WHITE,false);
                         stonesCount++;
                     }
                 }
@@ -145,6 +159,17 @@ public class GameBoard {
             drawableToRet = R.drawable.stone_black_small;
         } else if (stoneColor == StoneColor.WHITE) {
             drawableToRet = R.drawable.stone_white_small;
+        }
+
+        return drawableToRet;
+    }
+    //______________________________________
+    public int getDrawableKingStoneByColor(StoneColor stoneColor){
+        int drawableToRet = 0;
+        if (stoneColor == StoneColor.BLACK) {
+            drawableToRet = R.drawable.black_stone_king;
+        } else if (stoneColor == StoneColor.WHITE) {
+            drawableToRet = R.drawable.white_stone_king;
         }
 
         return drawableToRet;
